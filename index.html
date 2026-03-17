@@ -96,10 +96,6 @@
             box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
         }
         
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-        
         .feature-card {
             transition: all 0.3s ease;
             border: 2px solid transparent;
@@ -118,10 +114,6 @@
         .upload-zone:hover, .upload-zone.dragover {
             border-color: #667eea;
             background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .upload-zone.dragover {
-            transform: scale(1.02);
         }
         
         @keyframes float {
@@ -215,7 +207,6 @@
             transform: translateX(5px);
         }
         
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -225,44 +216,6 @@
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .pattern-preview {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
-            outline: none;
-        }
-        
-        .slider-thumb::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .slider-thumb::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
         }
 
         .eye-shape-btn {
@@ -313,6 +266,39 @@
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
         }
+
+        .slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .slider-thumb::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
+        }
+
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -324,7 +310,6 @@
         <div class="absolute -bottom-32 left-20 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
     </div>
 
-    <!-- Main Container -->
     <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
         
         <!-- Header -->
@@ -340,15 +325,15 @@
                 Generador QR <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-300">Pro</span>
             </h1>
             <p class="text-white/80 text-lg max-w-2xl mx-auto">
-                Crea códigos QR ilimitados y gratuitos para enlaces, texto, imágenes, contactos, WiFi y más. 
-                <span class="font-semibold text-white">Con logos, colores y estilos personalizados.</span>
+                Crea códigos QR ilimitados y gratuitos con personalización avanzada.
+                <span class="font-semibold text-white">Colores, logos, formas y marcos.</span>
             </p>
         </header>
 
         <!-- Main App Grid -->
         <div class="grid lg:grid-cols-12 gap-8">
             
-            <!-- Left Panel: Controls -->
+            <!-- Left Panel -->
             <div class="lg:col-span-7 space-y-6">
                 
                 <!-- Type Selector -->
@@ -382,7 +367,7 @@
                 <div class="glass-panel rounded-3xl p-8 shadow-2xl">
                     
                     <!-- URL Form -->
-                    <div id="form-url" class="form-section">
+                    <div id="form-url" class="form-section active">
                         <div class="mb-6">
                             <label class="block text-sm font-bold text-gray-700 mb-2">
                                 <i class="fa-solid fa-globe mr-2 text-indigo-500"></i>URL del sitio web
@@ -398,7 +383,7 @@
                     </div>
 
                     <!-- Text Form -->
-                    <div id="form-text" class="form-section hidden">
+                    <div id="form-text" class="form-section">
                         <div class="mb-6">
                             <label class="block text-sm font-bold text-gray-700 mb-2">
                                 <i class="fa-solid fa-align-left mr-2 text-indigo-500"></i>Texto o mensaje
@@ -414,7 +399,7 @@
                     </div>
 
                     <!-- Image Form -->
-                    <div id="form-image" class="form-section hidden">
+                    <div id="form-image" class="form-section">
                         <div class="mb-6">
                             <label class="block text-sm font-bold text-gray-700 mb-2">
                                 <i class="fa-solid fa-cloud-arrow-up mr-2 text-indigo-500"></i>Subir imagen
@@ -423,16 +408,16 @@
                                 <input type="file" id="input-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleImageUpload(event)">
                                 <div id="upload-placeholder">
                                     <i class="fa-solid fa-images text-5xl text-gray-400 mb-4"></i>
-                                    <p class="text-gray-600 font-medium mb-2">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                                    <p class="text-gray-600 font-medium mb-2">Arrastra una imagen aquí o haz clic</p>
                                     <p class="text-sm text-gray-400">JPG, PNG, GIF hasta 5MB</p>
                                 </div>
                                 <div id="upload-preview" class="hidden">
                                     <img id="preview-img" class="max-h-48 mx-auto rounded-lg shadow-md mb-4" />
-                                    <p class="text-sm text-green-600 font-medium"><i class="fa-solid fa-check-circle mr-1"></i>Imagen lista para compartir</p>
+                                    <p class="text-sm text-green-600 font-medium"><i class="fa-solid fa-check-circle mr-1"></i>Imagen lista</p>
                                 </div>
                             </div>
                             <div id="image-url-container" class="mt-4 hidden">
-                                <label class="block text-sm font-bold text-gray-700 mb-2">URL de la imagen generada:</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">URL generada:</label>
                                 <div class="flex gap-2">
                                     <input type="text" id="image-url-input" readonly 
                                         class="flex-1 px-4 py-2 rounded-lg border-2 border-gray-200 bg-gray-50 text-sm text-gray-600">
@@ -445,7 +430,7 @@
                     </div>
 
                     <!-- Contact Form -->
-                    <div id="form-contact" class="form-section hidden">
+                    <div id="form-contact" class="form-section">
                         <div class="grid md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Nombre completo</label>
@@ -475,7 +460,7 @@
                     </div>
 
                     <!-- WiFi Form -->
-                    <div id="form-wifi" class="form-section hidden">
+                    <div id="form-wifi" class="form-section">
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de red (SSID)</label>
                             <input type="text" id="wifi-ssid" placeholder="MiWiFi_5G" 
@@ -504,7 +489,7 @@
                     </div>
 
                     <!-- Email Form -->
-                    <div id="form-email" class="form-section hidden">
+                    <div id="form-email" class="form-section">
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Destinatario</label>
                             <input type="email" id="email-to" placeholder="destinatario@ejemplo.com" 
@@ -527,7 +512,7 @@
 
                 </div>
 
-                <!-- ADVANCED CUSTOMIZATION PANEL -->
+                <!-- Customization Panel -->
                 <div class="glass-panel rounded-3xl p-8 shadow-2xl border-t-4 border-indigo-500">
                     <div class="flex items-center justify-between mb-6">
                         <label class="block text-lg font-bold text-gray-800 flex items-center gap-2">
@@ -539,14 +524,13 @@
                         </button>
                     </div>
 
-                    <!-- Colors Section -->
+                    <!-- Colors -->
                     <div class="mb-8">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-palette text-indigo-500"></i> Colores y Estilos
+                            <i class="fa-solid fa-palette text-indigo-500"></i> Colores
                         </h3>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                            <!-- Foreground Color -->
                             <div>
                                 <label class="text-sm font-medium text-gray-600 mb-2 block">Color del QR</label>
                                 <div class="flex gap-2">
@@ -559,7 +543,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Background Color -->
                             <div>
                                 <label class="text-sm font-medium text-gray-600 mb-2 block">Color de fondo</label>
                                 <div class="color-picker-wrapper h-12" id="bg-color-preview" style="background: #ffffff;">
@@ -568,7 +551,6 @@
                             </div>
                         </div>
 
-                        <!-- Gradient Presets (Hidden by default) -->
                         <div id="gradient-presets" class="hidden mb-4">
                             <label class="text-sm font-medium text-gray-600 mb-2 block">Presets de gradientes</label>
                             <div class="grid grid-cols-4 gap-2">
@@ -576,15 +558,10 @@
                                 <div class="preset-gradient" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" onclick="applyGradient('linear-gradient(135deg, #f093fb 0%, #f5576c 100%)')"></div>
                                 <div class="preset-gradient" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="applyGradient('linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)')"></div>
                                 <div class="preset-gradient" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" onclick="applyGradient('linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" onclick="applyGradient('linear-gradient(135deg, #fa709a 0%, #fee140 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);" onclick="applyGradient('linear-gradient(135deg, #30cfd0 0%, #330867 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);" onclick="applyGradient('linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);" onclick="applyGradient('linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)')"></div>
                             </div>
                         </div>
 
-                        <!-- Transparency -->
-                        <div class="flex items-center gap-4 mb-4">
+                        <div class="flex items-center gap-4">
                             <label class="text-sm font-medium text-gray-600">Fondo transparente</label>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="transparent-bg" class="sr-only peer" onchange="toggleTransparency()">
@@ -593,13 +570,12 @@
                         </div>
                     </div>
 
-                    <!-- Shapes Section -->
+                    <!-- Shapes -->
                     <div class="mb-8">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-shapes text-indigo-500"></i> Formas y Estilos
+                            <i class="fa-solid fa-shapes text-indigo-500"></i> Formas
                         </h3>
                         
-                        <!-- Body Shape -->
                         <div class="mb-4">
                             <label class="text-sm font-medium text-gray-600 mb-2 block">Forma de los módulos</label>
                             <div class="flex gap-2 flex-wrap">
@@ -618,9 +594,8 @@
                             </div>
                         </div>
 
-                        <!-- Eye Shape -->
                         <div class="mb-4">
-                            <label class="text-sm font-medium text-gray-600 mb-2 block">Forma de las esquinas (ojos)</label>
+                            <label class="text-sm font-medium text-gray-600 mb-2 block">Forma de las esquinas</label>
                             <div class="flex gap-3">
                                 <div class="eye-shape-btn active" onclick="setEyeShape('square', this)" title="Cuadrado">
                                     <div class="w-5 h-5 border-2 border-current"></div>
@@ -638,22 +613,22 @@
                         </div>
                     </div>
 
-                    <!-- Logo Section -->
+                    <!-- Logo -->
                     <div class="mb-8">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
                             <i class="fa-solid fa-image text-indigo-500"></i> Logo Central
                         </h3>
                         
-                        <div class="logo-upload-area mb-4" id="logo-upload-zone">
+                        <div class="logo-upload-area mb-4" id="logo-upload-zone" onclick="document.getElementById('logo-input').click()">
                             <input type="file" id="logo-input" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
-                            <div id="logo-placeholder" onclick="document.getElementById('logo-input').click()">
+                            <div id="logo-placeholder">
                                 <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 mb-2"></i>
                                 <p class="text-sm text-gray-600 font-medium">Haz clic para subir logo</p>
-                                <p class="text-xs text-gray-400 mt-1">PNG con fondo transparente recomendado</p>
+                                <p class="text-xs text-gray-400 mt-1">PNG transparente recomendado</p>
                             </div>
                             <div id="logo-preview-container" class="hidden relative">
                                 <img id="logo-preview" class="h-24 mx-auto rounded-lg shadow-md" />
-                                <button onclick="removeLogo()" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
+                                <button onclick="event.stopPropagation(); removeLogo()" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
                                     <i class="fa-solid fa-times text-xs"></i>
                                 </button>
                             </div>
@@ -670,16 +645,16 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="text-xs text-gray-500 mb-1 block">Esquinas redondeadas</label>
+                                <label class="text-xs text-gray-500 mb-1 block">Redondeo</label>
                                 <input type="range" id="logo-radius" min="0" max="50" value="50" class="w-full slider-thumb" oninput="generateQR()">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Frame Section -->
+                    <!-- Frame -->
                     <div class="mb-6">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-border-all text-indigo-500"></i> Marco Decorativo
+                            <i class="fa-solid fa-border-all text-indigo-500"></i> Marco
                         </h3>
                         
                         <div class="grid grid-cols-4 gap-3 mb-4">
@@ -706,13 +681,12 @@
                             </div>
                         </div>
 
-                        <!-- Frame Text -->
                         <div id="frame-text-options" class="hidden">
                             <div class="mb-3">
                                 <label class="text-sm font-medium text-gray-600 mb-1 block">Texto del marco</label>
                                 <input type="text" id="frame-text" placeholder="ESCANEAME" maxlength="15"
-                                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 text-sm"
-                                    oninput="generateQR()">
+                                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 text-sm uppercase"
+                                    oninput="updateFrameText()">
                             </div>
                             <div class="flex gap-3">
                                 <div class="flex-1">
@@ -727,7 +701,7 @@
                         </div>
                     </div>
 
-                    <!-- Quality Settings -->
+                    <!-- Quality -->
                     <div class="border-t-2 border-gray-100 pt-6">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -736,23 +710,23 @@
                                     <option value="200">Pequeño (200px)</option>
                                     <option value="300" selected>Mediano (300px)</option>
                                     <option value="400">Grande (400px)</option>
-                                    <option value="500">Extra Grande (500px)</option>
+                                    <option value="500">Extra (500px)</option>
                                     <option value="800">HD (800px)</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs text-gray-500 mb-1 block">Nivel corrección</label>
+                                <label class="text-xs text-gray-500 mb-1 block">Corrección de errores</label>
                                 <select id="qr-level" class="w-full h-10 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
                                     <option value="1">Bajo (~7%)</option>
                                     <option value="2" selected>Medio (~15%)</option>
                                     <option value="3">Alto (~25%)</option>
-                                    <option value="4">Máximo (~30%) - Recomendado con logo</option>
+                                    <option value="4">Máximo (~30%)</option>
                                 </select>
                             </div>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">
                             <i class="fa-solid fa-circle-info mr-1"></i>
-                            Usa <strong>Máximo</strong> si agregas un logo para mantener la legibilidad
+                            Usa <strong>Máximo</strong> si agregas un logo
                         </p>
                     </div>
 
@@ -763,26 +737,26 @@
                     <div class="glass-panel rounded-2xl p-4 feature-card">
                         <div class="text-indigo-500 text-2xl mb-2"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                         <h3 class="font-bold text-gray-800 mb-1">Personalizable</h3>
-                        <p class="text-sm text-gray-600">Colores, logos, formas y marcos</p>
+                        <p class="text-sm text-gray-600">Colores, logos, formas</p>
                     </div>
                     <div class="glass-panel rounded-2xl p-4 feature-card">
                         <div class="text-purple-500 text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
                         <h3 class="font-bold text-gray-800 mb-1">Privado</h3>
-                        <p class="text-sm text-gray-600">Procesamiento local, sin servidor</p>
+                        <p class="text-sm text-gray-600">Sin servidor externo</p>
                     </div>
                     <div class="glass-panel rounded-2xl p-4 feature-card">
                         <div class="text-pink-500 text-2xl mb-2"><i class="fa-solid fa-infinity"></i></div>
                         <h3 class="font-bold text-gray-800 mb-1">Ilimitado</h3>
-                        <p class="text-sm text-gray-600">Sin marcas de agua ni límites</p>
+                        <p class="text-sm text-gray-600">Sin marcas de agua</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Panel: Preview -->
+            <!-- Right Panel -->
             <div class="lg:col-span-5">
                 <div class="sticky top-8 space-y-6">
                     
-                    <!-- QR Preview Card -->
+                    <!-- Preview -->
                     <div class="glass-panel rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
                         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
                         
@@ -791,24 +765,19 @@
                         </h2>
                         
                         <div class="relative inline-block mb-6" id="qr-container-wrapper">
-                            <!-- Frame SVG will be injected here -->
                             <div id="frame-container" class="qr-frame hidden">
-                                <svg width="400" height="400" viewBox="0 0 400 400">
-                                    <!-- Frame paths injected by JS -->
-                                </svg>
+                                <svg width="400" height="400" viewBox="0 0 400 400"></svg>
                             </div>
                             
-                            <!-- QR Code -->
-                            <div id="qrcode" class="qr-wrapper bg-white p-4 rounded-xl shadow-lg">
+                            <div id="qrcode" class="qr-wrapper bg-white p-4 rounded-xl shadow-lg inline-block">
                                 <div class="text-gray-400 p-8">
                                     <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
                                     <p class="text-sm">Ingresa datos para generar</p>
                                 </div>
                             </div>
                             
-                            <!-- Logo Overlay -->
                             <div id="logo-overlay" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
-                                <img id="overlay-img" class="shadow-2xl" style="max-width: 60px; max-height: 60px; border-radius: 50%;" />
+                                <img id="overlay-img" class="shadow-2xl" style="max-width: 60px; max-height: 60px;" />
                             </div>
                         </div>
 
@@ -840,7 +809,7 @@
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-gray-800 flex items-center gap-2">
                                 <i class="fa-solid fa-clock-rotate-left text-indigo-500"></i>
-                                Historial reciente
+                                Historial
                             </h3>
                             <button onclick="clearHistory()" class="text-xs text-red-500 hover:text-red-700 font-medium">
                                 Borrar
@@ -855,29 +824,29 @@
                     <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl">
                         <h3 class="font-bold mb-3 flex items-center gap-2">
                             <i class="fa-solid fa-lightbulb text-yellow-300"></i>
-                            Consejo pro
+                            Consejo
                         </h3>
                         <p class="text-sm text-white/90 leading-relaxed" id="tip-text">
-                            Si agregas un logo, usa el nivel de corrección <strong>Máximo</strong> para que el QR siga siendo legible aunque parte esté cubierta.
+                            Si agregas un logo, usa el nivel de corrección <strong>Máximo</strong> para mantener la legibilidad.
                         </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="mt-16 text-center text-white/60 text-sm">
             <p>Generador QR Pro © 2025 • 100% Gratuito y Privado</p>
         </footer>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
         <i class="fa-solid fa-check-circle text-green-400"></i>
         <span id="toast-message">Operación exitosa</span>
     </div>
 
     <script>
+        // Global variables
         let currentTab = 'url';
         let qrCodeObj = null;
         let history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
@@ -886,7 +855,6 @@
         let isGradientMode = false;
         let currentGradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
         
-        // Customization state
         let customSettings = {
             bodyShape: 'square',
             eyeShape: 'square',
@@ -899,34 +867,71 @@
             transparent: false
         };
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
             updateHistoryDisplay();
             setupDragAndDrop();
             
-            // Character counter for text
-            document.getElementById('input-text')?.addEventListener('input', function() {
-                document.getElementById('char-count').textContent = this.value.length + ' caracteres';
-            });
+            // Setup character counter
+            const textInput = document.getElementById('input-text');
+            if (textInput) {
+                textInput.addEventListener('input', function() {
+                    const counter = document.getElementById('char-count');
+                    if (counter) {
+                        counter.textContent = this.value.length + ' caracteres';
+                    }
+                });
+            }
 
             // Setup logo size slider
-            document.getElementById('logo-size').addEventListener('input', function() {
-                document.getElementById('logo-size-value').textContent = this.value + '%';
-            });
+            const logoSizeSlider = document.getElementById('logo-size');
+            if (logoSizeSlider) {
+                logoSizeSlider.addEventListener('input', function() {
+                    const display = document.getElementById('logo-size-value');
+                    if (display) {
+                        display.textContent = this.value + '%';
+                    }
+                });
+            }
+
+            // Setup frame text input
+            const frameTextInput = document.getElementById('frame-text');
+            if (frameTextInput) {
+                frameTextInput.addEventListener('input', function() {
+                    customSettings.frameText = this.value.toUpperCase();
+                    generateQR();
+                });
+            }
         });
 
+        // Tab switching
         function switchTab(tab) {
-            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
-                btn.classList.remove('tab-active');
-                btn.classList.add('tab-inactive');
+            // Update tab buttons
+            const tabs = ['url', 'text', 'image', 'contact', 'wifi', 'email'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                if (btn) {
+                    if (t === tab) {
+                        btn.classList.remove('tab-inactive');
+                        btn.classList.add('tab-active');
+                    } else {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('tab-inactive');
+                    }
+                }
             });
-            document.getElementById('tab-' + tab).classList.remove('tab-inactive');
-            document.getElementById('tab-' + tab).classList.add('tab-active');
 
-            document.querySelectorAll('.form-section').forEach(form => {
-                form.classList.add('hidden');
+            // Update forms visibility
+            tabs.forEach(t => {
+                const form = document.getElementById('form-' + t);
+                if (form) {
+                    if (t === tab) {
+                        form.classList.add('active');
+                    } else {
+                        form.classList.remove('active');
+                    }
+                }
             });
-            document.getElementById('form-' + tab).classList.remove('hidden');
 
             currentTab = tab;
             generateQR();
@@ -935,47 +940,50 @@
 
         function updateTip(tab) {
             const tips = {
-                url: "Para enlaces, usa URLs cortas (acorta con bit.ly) para crear QR menos densos y más fáciles de escanear.",
-                text: "El límite es ~3000 caracteres. Para textos largos, considera crear un PDF y subirlo como imagen.",
-                image: "Las imágenes se convierten a URL pública temporal. Para uso permanente, usa un servicio como Imgur.",
-                contact: "El formato vCard es compatible con todos los smartphones. Asegúrate de incluir prefijo de país (+34).",
-                wifi: "El QR WiFi permite conectarse automáticamente. Funciona en iOS 11+ y Android 10+ sin necesidad de apps.",
-                email: "Prellena el asunto y cuerpo para facilitar consultas. Ideal para soporte técnico o contactos comerciales."
+                url: "Para enlaces, usa URLs cortas (acorta con bit.ly) para crear QR menos densos.",
+                text: "El límite es ~3000 caracteres. Para textos largos, considera crear un PDF.",
+                image: "Las imágenes se convierten a URL temporal. Para uso permanente, usa Imgur.",
+                contact: "El formato vCard es compatible con todos los smartphones. Incluye prefijo +34.",
+                wifi: "El QR WiFi permite conectarse automáticamente en iOS 11+ y Android 10+.",
+                email: "Prellena el asunto y cuerpo para facilitar consultas comerciales."
             };
-            document.getElementById('tip-text').textContent = tips[tab];
+            const tipElement = document.getElementById('tip-text');
+            if (tipElement) {
+                tipElement.textContent = tips[tab] || tips['url'];
+            }
         }
 
         function getQRData() {
             switch(currentTab) {
                 case 'url':
-                    const url = document.getElementById('input-url').value.trim();
+                    const url = document.getElementById('input-url')?.value.trim() || '';
                     return url ? (url.startsWith('http') ? url : 'https://' + url) : '';
                 
                 case 'text':
-                    return document.getElementById('input-text').value.trim();
+                    return document.getElementById('input-text')?.value.trim() || '';
                 
                 case 'image':
                     return uploadedImageData || '';
                 
                 case 'contact':
-                    const name = document.getElementById('contact-name').value;
-                    const phone = document.getElementById('contact-phone').value;
-                    const email = document.getElementById('contact-email').value;
-                    const org = document.getElementById('contact-org').value;
+                    const name = document.getElementById('contact-name')?.value || '';
+                    const phone = document.getElementById('contact-phone')?.value || '';
+                    const email = document.getElementById('contact-email')?.value || '';
+                    const org = document.getElementById('contact-org')?.value || '';
                     if (!name && !phone) return '';
                     return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nORG:${org}\nEND:VCARD`;
                 
                 case 'wifi':
-                    const ssid = document.getElementById('wifi-ssid').value;
-                    const pass = document.getElementById('wifi-pass').value;
-                    const type = document.getElementById('wifi-type').value;
+                    const ssid = document.getElementById('wifi-ssid')?.value || '';
+                    const pass = document.getElementById('wifi-pass')?.value || '';
+                    const type = document.getElementById('wifi-type')?.value || 'WPA';
                     if (!ssid) return '';
                     return `WIFI:T:${type};S:${ssid};P:${pass};;`;
                 
                 case 'email':
-                    const to = document.getElementById('email-to').value;
-                    const subject = document.getElementById('email-subject').value;
-                    const body = document.getElementById('email-body').value;
+                    const to = document.getElementById('email-to')?.value || '';
+                    const subject = document.getElementById('email-subject')?.value || '';
+                    const body = document.getElementById('email-body')?.value || '';
                     if (!to) return '';
                     return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                 
@@ -991,28 +999,36 @@
             const info = document.getElementById('qr-info');
             const preview = document.getElementById('qr-data-preview');
 
-            if (!data) {
-                container.innerHTML = `
-                    <div class="text-gray-400 p-8">
-                        <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
-                        <p class="text-sm">Ingresa datos para generar</p>
-                    </div>
-                `;
-                actions.classList.add('opacity-50', 'pointer-events-none');
-                info.classList.add('hidden');
-                document.getElementById('logo-overlay').classList.add('hidden');
+            if (!data || !container) {
+                if (container) {
+                    container.innerHTML = `
+                        <div class="text-gray-400 p-8">
+                            <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
+                            <p class="text-sm">Ingresa datos para generar</p>
+                        </div>
+                    `;
+                }
+                if (actions) {
+                    actions.classList.add('opacity-50', 'pointer-events-none');
+                }
+                if (info) {
+                    info.classList.add('hidden');
+                }
+                const logoOverlay = document.getElementById('logo-overlay');
+                if (logoOverlay) {
+                    logoOverlay.classList.add('hidden');
+                }
                 return;
             }
 
             container.innerHTML = '';
             
-            const size = parseInt(document.getElementById('qr-size').value);
-            const color = document.getElementById('qr-color').value;
-            const bgColor = customSettings.transparent ? '#ffffff00' : document.getElementById('bg-color').value;
-            const level = parseInt(document.getElementById('qr-level').value);
+            const size = parseInt(document.getElementById('qr-size')?.value || 300);
+            const color = document.getElementById('qr-color')?.value || '#000000';
+            const bgColor = customSettings.transparent ? '#ffffff00' : (document.getElementById('bg-color')?.value || '#ffffff');
+            const level = parseInt(document.getElementById('qr-level')?.value || 2);
 
             try {
-                // Create QR with standard library first
                 qrCodeObj = new QRCode(container, {
                     text: data,
                     width: size,
@@ -1022,23 +1038,26 @@
                     correctLevel: level
                 });
 
-                // Apply custom styling after generation
                 setTimeout(() => {
                     applyCustomStyling(container, size);
                 }, 50);
 
-                // Handle logo overlay
                 updateLogoOverlay(size);
-
-                // Handle frame
                 updateFrame(size);
 
-                actions.classList.remove('opacity-50', 'pointer-events-none');
+                if (actions) {
+                    actions.classList.remove('opacity-50', 'pointer-events-none');
+                }
                 
-                let previewText = data;
-                if (previewText.length > 50) previewText = previewText.substring(0, 50) + '...';
-                preview.textContent = previewText;
-                info.classList.remove('hidden');
+                if (preview) {
+                    let previewText = data;
+                    if (previewText.length > 50) previewText = previewText.substring(0, 50) + '...';
+                    preview.textContent = previewText;
+                }
+                
+                if (info) {
+                    info.classList.remove('hidden');
+                }
 
                 clearTimeout(window.historyTimeout);
                 window.historyTimeout = setTimeout(() => addToHistory(data, currentTab), 1000);
@@ -1053,36 +1072,30 @@
             const canvas = container.querySelector('canvas');
             if (!canvas) return;
 
-            // Create new canvas for custom drawing
             const newCanvas = document.createElement('canvas');
             newCanvas.width = size;
             newCanvas.height = size;
             const ctx = newCanvas.getContext('2d');
 
-            // Draw background
             if (!customSettings.transparent) {
-                ctx.fillStyle = document.getElementById('bg-color').value;
+                ctx.fillStyle = document.getElementById('bg-color')?.value || '#ffffff';
                 ctx.fillRect(0, 0, size, size);
             }
 
-            // Get original image data
             const imgData = canvas.getContext('2d').getImageData(0, 0, size, size);
             const data = imgData.data;
-            
-            const cellSize = size / 25; // Approximate QR version size
-            const color = document.getElementById('qr-color').value;
+            const cellSize = Math.floor(size / 25);
+            const color = document.getElementById('qr-color')?.value || '#000000';
 
-            // Draw based on shape settings
             for (let y = 0; y < size; y += cellSize) {
                 for (let x = 0; x < size; x += cellSize) {
                     const i = (Math.floor(y) * size + Math.floor(x)) * 4;
-                    if (data[i] < 128) { // Dark pixel
+                    if (data[i] < 128) {
                         drawShape(ctx, x, y, cellSize - 1, color);
                     }
                 }
             }
 
-            // Replace original
             canvas.width = size;
             canvas.height = size;
             canvas.getContext('2d').drawImage(newCanvas, 0, 0);
@@ -1092,7 +1105,6 @@
             ctx.fillStyle = color;
             
             if (isGradientMode) {
-                // Create gradient for this cell
                 const gradient = ctx.createLinearGradient(x, y, x + size, y + size);
                 const colors = currentGradient.match(/#[a-fA-F0-9]{6}/g);
                 if (colors && colors.length >= 2) {
@@ -1144,6 +1156,8 @@
             const overlay = document.getElementById('logo-overlay');
             const img = document.getElementById('overlay-img');
             
+            if (!overlay || !img) return;
+            
             if (logoImageData) {
                 overlay.classList.remove('hidden');
                 img.src = logoImageData;
@@ -1159,7 +1173,10 @@
 
         function updateFrame(size) {
             const frameContainer = document.getElementById('frame-container');
+            if (!frameContainer) return;
+            
             const svg = frameContainer.querySelector('svg');
+            if (!svg) return;
             
             if (customSettings.frame === 'none') {
                 frameContainer.classList.add('hidden');
@@ -1167,50 +1184,64 @@
             }
             
             frameContainer.classList.remove('hidden');
-            const frameSize = size + 80;
-            svg.setAttribute('width', frameSize);
-            svg.setAttribute('height', frameSize + (customSettings.frameText ? 40 : 0));
-            svg.setAttribute('viewBox', `0 0 ${frameSize} ${frameSize + (customSettings.frameText ? 40 : 0)}`);
+            const framePadding = 80;
+            const textHeight = customSettings.frameText ? 40 : 0;
+            const totalSize = size + framePadding;
             
-            const color = document.getElementById('frame-color').value;
+            svg.setAttribute('width', totalSize);
+            svg.setAttribute('height', totalSize + textHeight);
+            svg.setAttribute('viewBox', `0 0 ${totalSize} ${totalSize + textHeight}`);
+            
+            const color = document.getElementById('frame-color')?.value || '#000000';
             let path = '';
             
             switch(customSettings.frame) {
                 case 'simple':
-                    path = `<rect x="20" y="20" width="${frameSize-40}" height="${frameSize-40}" fill="none" stroke="${color}" stroke-width="8"/>`;
+                    path = `<rect x="20" y="20" width="${totalSize-40}" height="${totalSize-40}" fill="none" stroke="${color}" stroke-width="8" rx="4"/>`;
                     break;
                 case 'rounded':
-                    path = `<rect x="20" y="20" width="${frameSize-40}" height="${frameSize-40}" rx="20" fill="none" stroke="${color}" stroke-width="8"/>`;
+                    path = `<rect x="20" y="20" width="${totalSize-40}" height="${totalSize-40}" fill="none" stroke="${color}" stroke-width="8" rx="20"/>`;
                     break;
                 case 'elegant':
                     const cornerSize = 30;
                     path = `
-                        <rect x="40" y="40" width="${frameSize-80}" height="${frameSize-80}" fill="none" stroke="${color}" stroke-width="4"/>
+                        <rect x="40" y="40" width="${totalSize-80}" height="${totalSize-80}" fill="none" stroke="${color}" stroke-width="4" rx="4"/>
                         <circle cx="40" cy="40" r="8" fill="${color}"/>
-                        <circle cx="${frameSize-40}" cy="40" r="8" fill="${color}"/>
-                        <circle cx="40" cy="${frameSize-40}" r="8" fill="${color}"/>
-                        <circle cx="${frameSize-40}" cy="${frameSize-40}" r="8" fill="${color}"/>
+                        <circle cx="${totalSize-40}" cy="40" r="8" fill="${color}"/>
+                        <circle cx="40" cy="${totalSize-40}" r="8" fill="${color}"/>
+                        <circle cx="${totalSize-40}" cy="${totalSize-40}" r="8" fill="${color}"/>
                     `;
                     break;
             }
             
-            // Add text if present
             if (customSettings.frameText) {
-                const textColor = document.getElementById('frame-text-color').value;
-                path += `<text x="${frameSize/2}" y="${frameSize-10}" text-anchor="middle" fill="${textColor}" font-size="24" font-weight="bold" font-family="Arial">${customSettings.frameText}</text>`;
+                const textColor = document.getElementById('frame-text-color')?.value || '#000000';
+                path += `<text x="${totalSize/2}" y="${totalSize-10}" text-anchor="middle" fill="${textColor}" font-size="20" font-weight="bold" font-family="Arial, sans-serif">${customSettings.frameText}</text>`;
             }
             
             svg.innerHTML = path;
             
-            // Adjust container positioning
-            frameContainer.style.width = frameSize + 'px';
-            frameContainer.style.height = (frameSize + (customSettings.frameText ? 40 : 0)) + 'px';
+            frameContainer.style.width = totalSize + 'px';
+            frameContainer.style.height = (totalSize + textHeight) + 'px';
+        }
+
+        function updateFrameText() {
+            const input = document.getElementById('frame-text');
+            if (input) {
+                customSettings.frameText = input.value.toUpperCase();
+                generateQR();
+            }
         }
 
         // Customization functions
         function updateColorPreview(type) {
-            const color = type === 'fg' ? document.getElementById('qr-color').value : document.getElementById('bg-color').value;
-            document.getElementById(type + '-color-preview').style.background = color;
+            const color = type === 'fg' 
+                ? (document.getElementById('qr-color')?.value || '#000000')
+                : (document.getElementById('bg-color')?.value || '#ffffff');
+            const preview = document.getElementById(type + '-color-preview');
+            if (preview) {
+                preview.style.background = color;
+            }
         }
 
         function setGradientMode() {
@@ -1218,62 +1249,62 @@
             const btn = document.getElementById('gradient-btn');
             const presets = document.getElementById('gradient-presets');
             
-            if (isGradientMode) {
-                btn.classList.add('ring-4', 'ring-indigo-300');
-                presets.classList.remove('hidden');
-            } else {
-                btn.classList.remove('ring-4', 'ring-indigo-300');
-                presets.classList.add('hidden');
+            if (btn) {
+                if (isGradientMode) {
+                    btn.classList.add('ring-4', 'ring-indigo-300');
+                } else {
+                    btn.classList.remove('ring-4', 'ring-indigo-300');
+                }
             }
+            
+            if (presets) {
+                presets.classList.toggle('hidden', !isGradientMode);
+            }
+            
             generateQR();
         }
 
         function applyGradient(gradient) {
             currentGradient = gradient;
             document.querySelectorAll('.preset-gradient').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             generateQR();
         }
 
         function toggleTransparency() {
-            customSettings.transparent = document.getElementById('transparent-bg').checked;
+            const checkbox = document.getElementById('transparent-bg');
+            customSettings.transparent = checkbox ? checkbox.checked : false;
             generateQR();
         }
 
         function setBodyShape(shape, btn) {
             customSettings.bodyShape = shape;
             document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
             generateQR();
         }
 
         function setEyeShape(shape, btn) {
             customSettings.eyeShape = shape;
             document.querySelectorAll('.eye-shape-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
             generateQR();
         }
 
         function selectFrame(frame, el) {
             customSettings.frame = frame;
             document.querySelectorAll('.frame-option').forEach(f => f.classList.remove('selected'));
-            el.classList.add('selected');
+            if (el) el.classList.add('selected');
             
             const textOptions = document.getElementById('frame-text-options');
-            if (frame !== 'none') {
-                textOptions.classList.remove('hidden');
-            } else {
-                textOptions.classList.add('hidden');
+            if (textOptions) {
+                textOptions.classList.toggle('hidden', frame === 'none');
             }
             
             generateQR();
         }
-
-        // Update frame text listener
-        document.getElementById('frame-text')?.addEventListener('input', function() {
-            customSettings.frameText = this.value.toUpperCase();
-            generateQR();
-        });
 
         function handleLogoUpload(event) {
             const file = event.target.files[0];
@@ -1288,14 +1319,18 @@
             reader.onload = function(e) {
                 logoImageData = e.target.result;
                 
-                document.getElementById('logo-placeholder').classList.add('hidden');
-                document.getElementById('logo-preview-container').classList.remove('hidden');
-                document.getElementById('logo-preview').src = logoImageData;
+                const placeholder = document.getElementById('logo-placeholder');
+                const previewContainer = document.getElementById('logo-preview-container');
+                const preview = document.getElementById('logo-preview');
                 
-                // Auto-set correction level to high if logo added
-                if (document.getElementById('qr-level').value < 3) {
-                    document.getElementById('qr-level').value = 4;
-                    showToast('Nivel de corrección ajustado a Máximo para soportar el logo');
+                if (placeholder) placeholder.classList.add('hidden');
+                if (previewContainer) previewContainer.classList.remove('hidden');
+                if (preview) preview.src = logoImageData;
+                
+                const qrLevel = document.getElementById('qr-level');
+                if (qrLevel && qrLevel.value < 3) {
+                    qrLevel.value = 4;
+                    showToast('Corrección ajustada a Máximo para el logo');
                 }
                 
                 generateQR();
@@ -1306,26 +1341,43 @@
 
         function removeLogo() {
             logoImageData = null;
-            document.getElementById('logo-input').value = '';
-            document.getElementById('logo-placeholder').classList.remove('hidden');
-            document.getElementById('logo-preview-container').classList.add('hidden');
+            
+            const input = document.getElementById('logo-input');
+            if (input) input.value = '';
+            
+            const placeholder = document.getElementById('logo-placeholder');
+            const previewContainer = document.getElementById('logo-preview-container');
+            
+            if (placeholder) placeholder.classList.remove('hidden');
+            if (previewContainer) previewContainer.classList.add('hidden');
+            
             generateQR();
             showToast('Logo eliminado');
         }
 
         function updateLogoSize() {
-            customSettings.logoSize = document.getElementById('logo-size').value;
-            customSettings.logoRadius = document.getElementById('logo-radius').value;
+            const sizeSlider = document.getElementById('logo-size');
+            const radiusSlider = document.getElementById('logo-radius');
+            
+            if (sizeSlider) customSettings.logoSize = sizeSlider.value;
+            if (radiusSlider) customSettings.logoRadius = radiusSlider.value;
         }
 
         function resetCustomization() {
-            // Reset all customization options
-            document.getElementById('qr-color').value = '#000000';
-            document.getElementById('bg-color').value = '#ffffff';
-            document.getElementById('transparent-bg').checked = false;
-            document.getElementById('logo-size').value = 40;
-            document.getElementById('logo-radius').value = 50;
-            document.getElementById('frame-text').value = '';
+            // Reset values
+            const qrColor = document.getElementById('qr-color');
+            const bgColor = document.getElementById('bg-color');
+            const transparentBg = document.getElementById('transparent-bg');
+            const logoSize = document.getElementById('logo-size');
+            const logoRadius = document.getElementById('logo-radius');
+            const frameText = document.getElementById('frame-text');
+            
+            if (qrColor) qrColor.value = '#000000';
+            if (bgColor) bgColor.value = '#ffffff';
+            if (transparentBg) transparentBg.checked = false;
+            if (logoSize) logoSize.value = 40;
+            if (logoRadius) logoRadius.value = 50;
+            if (frameText) frameText.value = '';
             
             customSettings = {
                 bodyShape: 'square',
@@ -1340,16 +1392,28 @@
             };
             
             isGradientMode = false;
-            document.getElementById('gradient-presets').classList.add('hidden');
+            
+            const presets = document.getElementById('gradient-presets');
+            const gradientBtn = document.getElementById('gradient-btn');
+            
+            if (presets) presets.classList.add('hidden');
+            if (gradientBtn) gradientBtn.classList.remove('ring-4', 'ring-indigo-300');
             
             // Reset UI
             document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.shape-btn').classList.add('active');
+            const firstShape = document.querySelector('.shape-btn');
+            if (firstShape) firstShape.classList.add('active');
+            
             document.querySelectorAll('.eye-shape-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.eye-shape-btn').classList.add('active');
+            const firstEye = document.querySelector('.eye-shape-btn');
+            if (firstEye) firstEye.classList.add('active');
+            
             document.querySelectorAll('.frame-option').forEach(f => f.classList.remove('selected'));
-            document.querySelector('.frame-option').classList.add('selected');
-            document.getElementById('frame-text-options').classList.add('hidden');
+            const firstFrame = document.querySelector('.frame-option');
+            if (firstFrame) firstFrame.classList.add('selected');
+            
+            const textOptions = document.getElementById('frame-text-options');
+            if (textOptions) textOptions.classList.add('hidden');
             
             updateColorPreview('fg');
             updateColorPreview('bg');
@@ -1372,16 +1436,22 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = document.getElementById('preview-img');
-                img.src = e.target.result;
+                if (img) img.src = e.target.result;
                 
-                document.getElementById('upload-placeholder').classList.add('hidden');
-                document.getElementById('upload-preview').classList.remove('hidden');
+                const placeholder = document.getElementById('upload-placeholder');
+                const preview = document.getElementById('upload-preview');
+                
+                if (placeholder) placeholder.classList.add('hidden');
+                if (preview) preview.classList.remove('hidden');
                 
                 const fakeUrl = 'https://qrpro.app/img/' + Math.random().toString(36).substring(7);
                 uploadedImageData = fakeUrl;
                 
-                document.getElementById('image-url-container').classList.remove('hidden');
-                document.getElementById('image-url-input').value = fakeUrl;
+                const urlContainer = document.getElementById('image-url-container');
+                const urlInput = document.getElementById('image-url-input');
+                
+                if (urlContainer) urlContainer.classList.remove('hidden');
+                if (urlInput) urlInput.value = fakeUrl;
                 
                 generateQR();
                 showToast('Imagen cargada correctamente');
@@ -1416,14 +1486,19 @@
                 const dt = e.dataTransfer;
                 const files = dt.files;
                 if (files.length) {
-                    document.getElementById('input-image').files = files;
-                    handleImageUpload({ target: { files: files } });
+                    const input = document.getElementById('input-image');
+                    if (input) {
+                        input.files = files;
+                        handleImageUpload({ target: { files: files } });
+                    }
                 }
             }
         }
 
         function copyImageUrl() {
             const input = document.getElementById('image-url-input');
+            if (!input) return;
+            
             input.select();
             document.execCommand('copy');
             showToast('URL copiada al portapapeles');
@@ -1431,21 +1506,25 @@
 
         function togglePassword(id) {
             const input = document.getElementById(id);
+            if (!input) return;
+            
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
         function downloadQR(format) {
             const wrapper = document.getElementById('qr-container-wrapper');
+            if (!wrapper) return;
             
-            // Create a temporary canvas to combine everything
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Calculate dimensions including frame
             const qrCanvas = document.querySelector('#qrcode canvas');
-            if (!qrCanvas) return;
+            if (!qrCanvas) {
+                showToast('Genera un QR primero', 'error');
+                return;
+            }
             
-            const size = parseInt(document.getElementById('qr-size').value);
+            const size = parseInt(document.getElementById('qr-size')?.value || 300);
             const hasFrame = customSettings.frame !== 'none';
             const framePadding = hasFrame ? 80 : 0;
             const textHeight = (hasFrame && customSettings.frameText) ? 40 : 0;
@@ -1453,31 +1532,256 @@
             canvas.width = size + framePadding;
             canvas.height = size + framePadding + textHeight;
             
-            // Fill background if not transparent
             if (!customSettings.transparent) {
-                ctx.fillStyle = document.getElementById('bg-color').value;
+                ctx.fillStyle = document.getElementById('bg-color')?.value || '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
             
-            // Draw frame if exists
             if (hasFrame) {
                 const svg = document.querySelector('#frame-container svg');
-                const svgData = new XMLSerializer().serializeToString(svg);
-                const img = new Image();
-                img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
-                ctx.drawImage(img, 0, 0);
+                if (svg) {
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const img = new Image();
+                    img.onload = function() {
+                        ctx.drawImage(img, 0, 0);
+                        ctx.drawImage(qrCanvas, framePadding/2, framePadding/2);
+                        
+                        if (logoImageData) {
+                            const logoImg = document.getElementById('overlay-img');
+                            if (logoImg) {
+                                const logoSize = (size * customSettings.logoSize) / 100;
+                                const x = (canvas.width - logoSize) / 2;
+                                const y = (size + framePadding - logoSize) / 2;
+                                
+                                ctx.save();
+                                ctx.beginPath();
+                                const radius = (customSettings.logoRadius / 100) * (logoSize / 2);
+                                ctx.roundRect(x, y, logoSize, logoSize, radius);
+                                ctx.clip();
+                                ctx.drawImage(logoImg, x, y, logoSize, logoSize);
+                                ctx.restore();
+                            }
+                        }
+                        
+                        const link = document.createElement('a');
+                        link.download = 'qr-code-' + Date.now() + '.' + format;
+                        link.href = canvas.toDataURL('image/' + (format === 'jpg' ? 'jpeg' : 'png'));
+                        link.click();
+                        showToast('QR descargado como ' + format.toUpperCase());
+                    };
+                    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+                    return;
+                }
             }
             
-            // Draw QR
             ctx.drawImage(qrCanvas, framePadding/2, framePadding/2);
             
-            // Draw logo if exists
             if (logoImageData) {
                 const logoImg = document.getElementById('overlay-img');
-                const logoSize = (size * customSettings.logoSize) / 100;
-                const x = (canvas.width - logoSize) / 2;
-                const y = (size + framePadding - logoSize) / 2;
-                
-                ctx.save();
-                ctx.beginPath();
-                const radius = (customSettings.logoRadius / 100) * (
+                if (logoImg) {
+                    const logoSize = (size * customSettings.logoSize) / 100;
+                    const x = (canvas.width - logoSize) / 2;
+                    const y = (size + framePadding - logoSize) / 2;
+                    
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(x + logoSize/2, y + logoSize/2, logoSize/2, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(logoImg, x, y, logoSize, logoSize);
+                    ctx.restore();
+                }
+            }
+            
+            const link = document.createElement('a');
+            link.download = 'qr-code-' + Date.now() + '.' + format;
+            link.href = canvas.toDataURL('image/' + (format === 'jpg' ? 'jpeg' : 'png'));
+            link.click();
+            showToast('QR descargado como ' + format.toUpperCase());
+        }
+
+        function shareQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                showToast('Genera un QR primero', 'error');
+                return;
+            }
+            
+            canvas.toBlob(blob => {
+                const file = new File([blob], 'qr-code.png', { type: 'image/png' });
+                if (navigator.share && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        title: 'Mi Código QR',
+                        text: 'Escanea este código QR',
+                        files: [file]
+                    }).catch(() => {
+                        copyToClipboard();
+                    });
+                } else {
+                    copyToClipboard();
+                }
+            });
+        }
+
+        function copyToClipboard() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) return;
+            
+            canvas.toBlob(blob => {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item]).then(() => {
+                    showToast('QR copiado al portapapeles');
+                }).catch(() => {
+                    showToast('Error al copiar', 'error');
+                });
+            });
+        }
+
+        function printQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                showToast('Genera un QR primero', 'error');
+                return;
+            }
+            
+            const win = window.open();
+            win.document.write('<img src="' + canvas.toDataURL() + '" style="max-width:100%"/>');
+            win.print();
+            win.close();
+        }
+
+        function addToHistory(data, type) {
+            const item = {
+                data: data.substring(0, 100),
+                type: type,
+                time: new Date().toLocaleTimeString(),
+                fullData: data
+            };
+            
+            history.unshift(item);
+            if (history.length > 10) history.pop();
+            
+            localStorage.setItem('qrHistory', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const container = document.getElementById('history-list');
+            if (!container) return;
+            
+            if (history.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-400 text-center py-4">No hay QR generados aún</p>';
+                return;
+            }
+
+            const icons = {
+                url: 'fa-link',
+                text: 'fa-font',
+                image: 'fa-image',
+                contact: 'fa-address-card',
+                wifi: 'fa-wifi',
+                email: 'fa-envelope'
+            };
+
+            container.innerHTML = history.map((item, idx) => `
+                <div class="history-item flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-white/50" onclick="loadHistoryItem(${idx})">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600">
+                        <i class="fa-solid ${icons[item.type] || 'fa-qrcode'}"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">${escapeHtml(item.data)}</p>
+                        <p class="text-xs text-gray-500">${item.time} • ${item.type}</p>
+                    </div>
+                    <button onclick="event.stopPropagation(); loadHistoryItem(${idx})" class="text-indigo-500 hover:text-indigo-700 p-2">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function loadHistoryItem(idx) {
+            const item = history[idx];
+            if (!item) return;
+            
+            switchTab(item.type);
+            
+            switch(item.type) {
+                case 'url':
+                    const urlInput = document.getElementById('input-url');
+                    if (urlInput) urlInput.value = item.fullData;
+                    break;
+                case 'text':
+                    const textInput = document.getElementById('input-text');
+                    if (textInput) {
+                        textInput.value = item.fullData;
+                        const counter = document.getElementById('char-count');
+                        if (counter) counter.textContent = item.fullData.length + ' caracteres';
+                    }
+                    break;
+            }
+            
+            generateQR();
+            showToast('Datos restaurados del historial');
+        }
+
+        function clearHistory() {
+            history = [];
+            localStorage.removeItem('qrHistory');
+            updateHistoryDisplay();
+            showToast('Historial borrado');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const icon = toast?.querySelector('i');
+            
+            if (!toast || !msgEl) return;
+            
+            msgEl.textContent = message;
+            
+            if (icon) {
+                if (type === 'error') {
+                    icon.className = 'fa-solid fa-circle-xmark text-red-400';
+                } else if (type === 'info') {
+                    icon.className = 'fa-solid fa-circle-info text-blue-400';
+                } else {
+                    icon.className = 'fa-solid fa-check-circle text-green-400';
+                }
+            }
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes blob {
+                0% { transform: translate(0px, 0px) scale(1); }
+                33% { transform: translate(30px, -50px) scale(1.1); }
+                66% { transform: translate(-20px, 20px) scale(0.9); }
+                100% { transform: translate(0px, 0px) scale(1); }
+            }
+            .animate-blob {
+                animation: blob 7s infinite;
+            }
+            .animation-delay-2000 {
+                animation-delay: 2s;
+            }
+            .animation-delay-4000 {
+                animation-delay: 4s;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
