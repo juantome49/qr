@@ -52,40 +52,6 @@
             border-color: #667eea;
         }
         
-        .qr-wrapper {
-            position: relative;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-        
-        .qr-wrapper:hover {
-            transform: scale(1.02);
-        }
-        
-        .qr-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        .qr-logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 5;
-            overflow: hidden;
-        }
-        
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             transition: all 0.3s ease;
@@ -143,6 +109,7 @@
             border-radius: 12px;
             border: 2px solid #e2e8f0;
             transition: all 0.2s;
+            cursor: pointer;
         }
         
         .color-picker-wrapper:hover {
@@ -160,21 +127,10 @@
             opacity: 0;
         }
         
-        .gradient-btn {
-            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-            background-size: 300% 300%;
-            animation: gradient-shift 3s ease infinite;
-        }
-        
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
         .shape-btn {
             transition: all 0.2s;
             border: 2px solid #e2e8f0;
+            background: white;
         }
         
         .shape-btn.active {
@@ -187,15 +143,17 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
+            background: #f8fafc;
         }
         
         .frame-option:hover {
             transform: translateY(-2px);
+            border-color: #cbd5e1;
         }
         
         .frame-option.selected {
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            background: rgba(102, 126, 234, 0.1);
         }
         
         .history-item {
@@ -218,86 +176,26 @@
             border-radius: 4px;
         }
 
-        .eye-shape-btn {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: white;
-        }
-        
-        .eye-shape-btn.active {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
-        }
-
-        .logo-upload-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .logo-upload-area:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .preset-gradient {
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-        
-        .preset-gradient:hover {
-            transform: scale(1.05);
-        }
-        
-        .preset-gradient.active {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-        }
-
-        .slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
-            outline: none;
-        }
-        
-        .slider-thumb::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .slider-thumb::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
-        }
-
         .form-section {
             display: none;
         }
         
         .form-section.active {
             display: block;
+        }
+
+        .qr-preview-box {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: inline-block;
+            padding: 20px;
+            position: relative;
+        }
+
+        #qrcode img, #qrcode canvas {
+            display: block;
+            max-width: 100%;
         }
     </style>
 </head>
@@ -306,8 +204,8 @@
     <!-- Background Elements -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
         <div class="absolute top-0 left-0 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-32 left-20 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style="animation-delay: 2s;"></div>
+        <div class="absolute -bottom-32 left-20 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style="animation-delay: 4s;"></div>
     </div>
 
     <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
@@ -326,7 +224,6 @@
             </h1>
             <p class="text-white/80 text-lg max-w-2xl mx-auto">
                 Crea códigos QR ilimitados y gratuitos con personalización avanzada.
-                <span class="font-semibold text-white">Colores, logos, formas y marcos.</span>
             </p>
         </header>
 
@@ -368,63 +265,42 @@
                     
                     <!-- URL Form -->
                     <div id="form-url" class="form-section active">
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">
-                                <i class="fa-solid fa-globe mr-2 text-indigo-500"></i>URL del sitio web
-                            </label>
-                            <input type="url" id="input-url" placeholder="https://ejemplo.com" 
-                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all text-gray-700"
-                                oninput="generateQR()">
-                            <p class="text-xs text-gray-500 mt-2">
-                                <i class="fa-solid fa-circle-info mr-1"></i>
-                                Incluye https:// para mejores resultados
-                            </p>
-                        </div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">
+                            <i class="fa-solid fa-globe mr-2 text-indigo-500"></i>URL del sitio web
+                        </label>
+                        <input type="url" id="input-url" placeholder="https://ejemplo.com" 
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all text-gray-700"
+                            oninput="generateQR()">
                     </div>
 
                     <!-- Text Form -->
                     <div id="form-text" class="form-section">
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">
-                                <i class="fa-solid fa-align-left mr-2 text-indigo-500"></i>Texto o mensaje
-                            </label>
-                            <textarea id="input-text" rows="4" placeholder="Escribe aquí tu mensaje..." 
-                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all text-gray-700 resize-none"
-                                oninput="generateQR()"></textarea>
-                            <div class="flex justify-between text-xs text-gray-500 mt-2">
-                                <span><i class="fa-solid fa-circle-info mr-1"></i>Soporta emojis y caracteres especiales</span>
-                                <span id="char-count">0 caracteres</span>
-                            </div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">
+                            <i class="fa-solid fa-align-left mr-2 text-indigo-500"></i>Texto o mensaje
+                        </label>
+                        <textarea id="input-text" rows="4" placeholder="Escribe aquí tu mensaje..." 
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all text-gray-700 resize-none"
+                            oninput="generateQR()"></textarea>
+                        <div class="text-right text-xs text-gray-500 mt-1">
+                            <span id="char-count">0 caracteres</span>
                         </div>
                     </div>
 
                     <!-- Image Form -->
                     <div id="form-image" class="form-section">
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">
-                                <i class="fa-solid fa-cloud-arrow-up mr-2 text-indigo-500"></i>Subir imagen
-                            </label>
-                            <div id="upload-zone" class="upload-zone rounded-2xl p-8 text-center cursor-pointer relative">
-                                <input type="file" id="input-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleImageUpload(event)">
-                                <div id="upload-placeholder">
-                                    <i class="fa-solid fa-images text-5xl text-gray-400 mb-4"></i>
-                                    <p class="text-gray-600 font-medium mb-2">Arrastra una imagen aquí o haz clic</p>
-                                    <p class="text-sm text-gray-400">JPG, PNG, GIF hasta 5MB</p>
-                                </div>
-                                <div id="upload-preview" class="hidden">
-                                    <img id="preview-img" class="max-h-48 mx-auto rounded-lg shadow-md mb-4" />
-                                    <p class="text-sm text-green-600 font-medium"><i class="fa-solid fa-check-circle mr-1"></i>Imagen lista</p>
-                                </div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">
+                            <i class="fa-solid fa-cloud-arrow-up mr-2 text-indigo-500"></i>Subir imagen
+                        </label>
+                        <div id="upload-zone" class="upload-zone rounded-2xl p-8 text-center cursor-pointer relative">
+                            <input type="file" id="input-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleImageUpload(event)">
+                            <div id="upload-placeholder">
+                                <i class="fa-solid fa-images text-5xl text-gray-400 mb-4"></i>
+                                <p class="text-gray-600 font-medium mb-2">Haz clic para seleccionar imagen</p>
+                                <p class="text-sm text-gray-400">JPG, PNG hasta 5MB</p>
                             </div>
-                            <div id="image-url-container" class="mt-4 hidden">
-                                <label class="block text-sm font-bold text-gray-700 mb-2">URL generada:</label>
-                                <div class="flex gap-2">
-                                    <input type="text" id="image-url-input" readonly 
-                                        class="flex-1 px-4 py-2 rounded-lg border-2 border-gray-200 bg-gray-50 text-sm text-gray-600">
-                                    <button onclick="copyImageUrl()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                                        <i class="fa-solid fa-copy"></i>
-                                    </button>
-                                </div>
+                            <div id="upload-preview" class="hidden">
+                                <img id="preview-img" class="max-h-48 mx-auto rounded-lg shadow-md mb-4" />
+                                <p class="text-sm text-green-600 font-medium"><i class="fa-solid fa-check-circle mr-1"></i>Imagen lista</p>
                             </div>
                         </div>
                     </div>
@@ -433,7 +309,7 @@
                     <div id="form-contact" class="form-section">
                         <div class="grid md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Nombre completo</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Nombre</label>
                                 <input type="text" id="contact-name" placeholder="Juan Pérez" 
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
                                     oninput="generateQR()">
@@ -451,12 +327,6 @@
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
                                 oninput="generateQR()">
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Organización</label>
-                            <input type="text" id="contact-org" placeholder="Empresa S.L." 
-                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
-                                oninput="generateQR()">
-                        </div>
                     </div>
 
                     <!-- WiFi Form -->
@@ -470,7 +340,7 @@
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Contraseña</label>
                             <div class="relative">
-                                <input type="password" id="wifi-pass" placeholder="Contraseña segura" 
+                                <input type="password" id="wifi-pass" placeholder="Contraseña" 
                                     class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all pr-10"
                                     oninput="generateQR()">
                                 <button onclick="togglePassword('wifi-pass')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -479,7 +349,7 @@
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de seguridad</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Seguridad</label>
                             <select id="wifi-type" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all bg-white" onchange="generateQR()">
                                 <option value="WPA">WPA/WPA2</option>
                                 <option value="WEP">WEP</option>
@@ -492,19 +362,19 @@
                     <div id="form-email" class="form-section">
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Destinatario</label>
-                            <input type="email" id="email-to" placeholder="destinatario@ejemplo.com" 
+                            <input type="email" id="email-to" placeholder="correo@ejemplo.com" 
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
                                 oninput="generateQR()">
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Asunto</label>
-                            <input type="text" id="email-subject" placeholder="Consulta importante" 
+                            <input type="text" id="email-subject" placeholder="Asunto del correo" 
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
                                 oninput="generateQR()">
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Mensaje</label>
-                            <textarea id="email-body" rows="3" placeholder="Escribe tu mensaje aquí..." 
+                            <textarea id="email-body" rows="3" placeholder="Mensaje..." 
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all resize-none"
                                 oninput="generateQR()"></textarea>
                         </div>
@@ -512,244 +382,134 @@
 
                 </div>
 
-                <!-- Customization Panel -->
+                <!-- CUSTOMIZATION PANEL - SIMPLIFICADO Y CORREGIDO -->
                 <div class="glass-panel rounded-3xl p-8 shadow-2xl border-t-4 border-indigo-500">
                     <div class="flex items-center justify-between mb-6">
-                        <label class="block text-lg font-bold text-gray-800 flex items-center gap-2">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-2 text-indigo-600"></i>
-                            Personalización Avanzada
-                        </label>
+                        <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i>
+                            Personalización
+                        </h3>
                         <button onclick="resetCustomization()" class="text-sm text-gray-500 hover:text-red-500 transition-colors">
                             <i class="fa-solid fa-rotate-left mr-1"></i>Restaurar
                         </button>
                     </div>
 
-                    <!-- Colors -->
-                    <div class="mb-8">
-                        <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-palette text-indigo-500"></i> Colores
-                        </h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                    <!-- Colores -->
+                    <div class="mb-6">
+                        <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Colores</h4>
+                        <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="text-sm font-medium text-gray-600 mb-2 block">Color del QR</label>
-                                <div class="flex gap-2">
-                                    <div class="color-picker-wrapper flex-1 h-12" id="fg-color-preview" style="background: #000000;">
-                                        <input type="color" id="qr-color" value="#000000" onchange="updateColorPreview('fg'); generateQR()">
-                                    </div>
-                                    <button onclick="setGradientMode()" class="gradient-btn px-4 rounded-xl text-white font-medium text-sm shadow-lg hover:shadow-xl transition-all" id="gradient-btn">
-                                        <i class="fa-solid fa-rainbow mr-1"></i> Gradiente
-                                    </button>
+                                <label class="text-xs text-gray-500 mb-1 block">Color QR</label>
+                                <div class="color-picker-wrapper h-10 w-full" style="background: #000000;" id="preview-fg">
+                                    <input type="color" id="qr-color" value="#000000" onchange="updateColors()">
                                 </div>
                             </div>
-                            
                             <div>
-                                <label class="text-sm font-medium text-gray-600 mb-2 block">Color de fondo</label>
-                                <div class="color-picker-wrapper h-12" id="bg-color-preview" style="background: #ffffff;">
-                                    <input type="color" id="bg-color" value="#ffffff" onchange="updateColorPreview('bg'); generateQR()">
+                                <label class="text-xs text-gray-500 mb-1 block">Color fondo</label>
+                                <div class="color-picker-wrapper h-10 w-full" style="background: #ffffff;" id="preview-bg">
+                                    <input type="color" id="bg-color" value="#ffffff" onchange="updateColors()">
                                 </div>
                             </div>
-                        </div>
-
-                        <div id="gradient-presets" class="hidden mb-4">
-                            <label class="text-sm font-medium text-gray-600 mb-2 block">Presets de gradientes</label>
-                            <div class="grid grid-cols-4 gap-2">
-                                <div class="preset-gradient active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" onclick="applyGradient('linear-gradient(135deg, #667eea 0%, #764ba2 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" onclick="applyGradient('linear-gradient(135deg, #f093fb 0%, #f5576c 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" onclick="applyGradient('linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)')"></div>
-                                <div class="preset-gradient" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);" onclick="applyGradient('linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)')"></div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <label class="text-sm font-medium text-gray-600">Fondo transparente</label>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="transparent-bg" class="sr-only peer" onchange="toggleTransparency()">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                            </label>
                         </div>
                     </div>
 
-                    <!-- Shapes -->
-                    <div class="mb-8">
-                        <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-shapes text-indigo-500"></i> Formas
-                        </h3>
-                        
-                        <div class="mb-4">
-                            <label class="text-sm font-medium text-gray-600 mb-2 block">Forma de los módulos</label>
-                            <div class="flex gap-2 flex-wrap">
-                                <button class="shape-btn active px-4 py-2 rounded-lg text-sm font-medium" onclick="setBodyShape('square', this)">
-                                    <i class="fa-solid fa-square mr-1"></i> Cuadrado
-                                </button>
-                                <button class="shape-btn px-4 py-2 rounded-lg text-sm font-medium" onclick="setBodyShape('rounded', this)">
-                                    <i class="fa-solid fa-circle mr-1"></i> Redondeado
-                                </button>
-                                <button class="shape-btn px-4 py-2 rounded-lg text-sm font-medium" onclick="setBodyShape('dots', this)">
-                                    <i class="fa-solid fa-circle-dot mr-1"></i> Puntos
-                                </button>
-                                <button class="shape-btn px-4 py-2 rounded-lg text-sm font-medium" onclick="setBodyShape('diamond', this)">
-                                    <i class="fa-solid fa-diamond mr-1"></i> Diamante
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="text-sm font-medium text-gray-600 mb-2 block">Forma de las esquinas</label>
-                            <div class="flex gap-3">
-                                <div class="eye-shape-btn active" onclick="setEyeShape('square', this)" title="Cuadrado">
-                                    <div class="w-5 h-5 border-2 border-current"></div>
-                                </div>
-                                <div class="eye-shape-btn" onclick="setEyeShape('rounded', this)" title="Redondeado">
-                                    <div class="w-5 h-5 border-2 border-current rounded-lg"></div>
-                                </div>
-                                <div class="eye-shape-btn" onclick="setEyeShape('circle', this)" title="Círculo">
-                                    <div class="w-5 h-5 border-2 border-current rounded-full"></div>
-                                </div>
-                                <div class="eye-shape-btn" onclick="setEyeShape('leaf', this)" title="Hoja">
-                                    <div class="w-5 h-5 border-2 border-current" style="border-radius: 0 50% 0 50%;"></div>
-                                </div>
-                            </div>
+                    <!-- Formas -->
+                    <div class="mb-6">
+                        <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Forma de puntos</h4>
+                        <div class="flex gap-2">
+                            <button type="button" class="shape-btn active px-4 py-2 rounded-lg text-sm font-medium flex-1" onclick="setShape('square', this)">
+                                <i class="fa-solid fa-square mr-1"></i> Cuadrado
+                            </button>
+                            <button type="button" class="shape-btn px-4 py-2 rounded-lg text-sm font-medium flex-1" onclick="setShape('dots', this)">
+                                <i class="fa-solid fa-circle mr-1"></i> Redondo
+                            </button>
+                            <button type="button" class="shape-btn px-4 py-2 rounded-lg text-sm font-medium flex-1" onclick="setShape('rounded', this)">
+                                <i class="fa-solid fa-square-rounded mr-1"></i> Suave
+                            </button>
                         </div>
                     </div>
 
                     <!-- Logo -->
-                    <div class="mb-8">
-                        <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-image text-indigo-500"></i> Logo Central
-                        </h3>
-                        
-                        <div class="logo-upload-area mb-4" id="logo-upload-zone" onclick="document.getElementById('logo-input').click()">
+                    <div class="mb-6">
+                        <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Logo Central</h4>
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all" onclick="document.getElementById('logo-input').click()">
                             <input type="file" id="logo-input" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
-                            <div id="logo-placeholder">
-                                <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-400 mb-2"></i>
-                                <p class="text-sm text-gray-600 font-medium">Haz clic para subir logo</p>
-                                <p class="text-xs text-gray-400 mt-1">PNG transparente recomendado</p>
+                            <div id="logo-area">
+                                <i class="fa-solid fa-image text-2xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600">Haz clic para subir logo</p>
                             </div>
-                            <div id="logo-preview-container" class="hidden relative">
-                                <img id="logo-preview" class="h-24 mx-auto rounded-lg shadow-md" />
-                                <button onclick="event.stopPropagation(); removeLogo()" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
-                                    <i class="fa-solid fa-times text-xs"></i>
+                            <div id="logo-preview-area" class="hidden relative inline-block">
+                                <img id="logo-img" class="h-16 rounded-lg shadow-md" />
+                                <button type="button" onclick="event.stopPropagation(); removeLogo()" class="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs hover:bg-red-600">
+                                    <i class="fa-solid fa-times"></i>
                                 </button>
                             </div>
                         </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-xs text-gray-500 mb-1 block">Tamaño del logo</label>
-                                <input type="range" id="logo-size" min="20" max="80" value="40" class="w-full slider-thumb" oninput="updateLogoSize(); generateQR()">
-                                <div class="flex justify-between text-xs text-gray-400 mt-1">
-                                    <span>Pequeño</span>
-                                    <span id="logo-size-value">40%</span>
-                                    <span>Grande</span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="text-xs text-gray-500 mb-1 block">Redondeo</label>
-                                <input type="range" id="logo-radius" min="0" max="50" value="50" class="w-full slider-thumb" oninput="generateQR()">
-                            </div>
+                        <div class="mt-3">
+                            <label class="text-xs text-gray-500 mb-1 block">Tamaño del logo: <span id="logo-size-display">30</span>%</label>
+                            <input type="range" id="logo-size" min="10" max="50" value="30" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" oninput="updateLogoSize(this.value)">
                         </div>
                     </div>
 
-                    <!-- Frame -->
+                    <!-- Marco -->
                     <div class="mb-6">
-                        <h3 class="text-sm font-bold text-gray-700 mb-4 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-border-all text-indigo-500"></i> Marco
-                        </h3>
-                        
-                        <div class="grid grid-cols-4 gap-3 mb-4">
-                            <div class="frame-option selected p-3 rounded-xl bg-gray-50 flex flex-col items-center gap-2" onclick="selectFrame('none', this)">
-                                <div class="w-8 h-8 border-2 border-gray-300"></div>
-                                <span class="text-xs font-medium text-gray-600">Ninguno</span>
+                        <h4 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Marco</h4>
+                        <div class="grid grid-cols-4 gap-2 mb-3">
+                            <div class="frame-option selected p-2 rounded-lg text-center" onclick="setFrame('none', this)">
+                                <div class="w-8 h-8 border-2 border-gray-400 mx-auto mb-1"></div>
+                                <span class="text-xs">Ninguno</span>
                             </div>
-                            <div class="frame-option p-3 rounded-xl bg-gray-50 flex flex-col items-center gap-2" onclick="selectFrame('simple', this)">
-                                <div class="w-8 h-8 border-4 border-gray-800 rounded-sm"></div>
-                                <span class="text-xs font-medium text-gray-600">Simple</span>
+                            <div class="frame-option p-2 rounded-lg text-center" onclick="setFrame('simple', this)">
+                                <div class="w-8 h-8 border-4 border-gray-800 mx-auto mb-1"></div>
+                                <span class="text-xs">Simple</span>
                             </div>
-                            <div class="frame-option p-3 rounded-xl bg-gray-50 flex flex-col items-center gap-2" onclick="selectFrame('rounded', this)">
-                                <div class="w-8 h-8 border-4 border-gray-800 rounded-xl"></div>
-                                <span class="text-xs font-medium text-gray-600">Redondeado</span>
+                            <div class="frame-option p-2 rounded-lg text-center" onclick="setFrame('rounded', this)">
+                                <div class="w-8 h-8 border-4 border-gray-800 rounded-lg mx-auto mb-1"></div>
+                                <span class="text-xs">Redondo</span>
                             </div>
-                            <div class="frame-option p-3 rounded-xl bg-gray-50 flex flex-col items-center gap-2" onclick="selectFrame('elegant', this)">
-                                <div class="w-8 h-8 border-4 border-gray-800 rounded-sm relative">
-                                    <div class="absolute -top-1 -left-1 w-3 h-3 bg-gray-800 rounded-full"></div>
-                                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-gray-800 rounded-full"></div>
-                                    <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-gray-800 rounded-full"></div>
-                                    <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-gray-800 rounded-full"></div>
+                            <div class="frame-option p-2 rounded-lg text-center" onclick="setFrame('elegant', this)">
+                                <div class="w-8 h-8 border-4 border-gray-800 mx-auto mb-1 relative">
+                                    <div class="absolute -top-1 -left-1 w-2 h-2 bg-gray-800 rounded-full"></div>
+                                    <div class="absolute -top-1 -right-1 w-2 h-2 bg-gray-800 rounded-full"></div>
+                                    <div class="absolute -bottom-1 -left-1 w-2 h-2 bg-gray-800 rounded-full"></div>
+                                    <div class="absolute -bottom-1 -right-1 w-2 h-2 bg-gray-800 rounded-full"></div>
                                 </div>
-                                <span class="text-xs font-medium text-gray-600">Elegante</span>
+                                <span class="text-xs">Elegante</span>
                             </div>
                         </div>
-
-                        <div id="frame-text-options" class="hidden">
-                            <div class="mb-3">
-                                <label class="text-sm font-medium text-gray-600 mb-1 block">Texto del marco</label>
-                                <input type="text" id="frame-text" placeholder="ESCANEAME" maxlength="15"
-                                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 text-sm uppercase"
-                                    oninput="updateFrameText()">
-                            </div>
-                            <div class="flex gap-3">
-                                <div class="flex-1">
-                                    <label class="text-xs text-gray-500 mb-1 block">Color texto</label>
-                                    <input type="color" id="frame-text-color" value="#000000" class="w-full h-8 rounded cursor-pointer" onchange="generateQR()">
-                                </div>
-                                <div class="flex-1">
-                                    <label class="text-xs text-gray-500 mb-1 block">Color marco</label>
-                                    <input type="color" id="frame-color" value="#000000" class="w-full h-8 rounded cursor-pointer" onchange="generateQR()">
-                                </div>
-                            </div>
+                        <div id="frame-text-section" class="hidden">
+                            <input type="text" id="frame-text-input" placeholder="TEXTO DEL MARCO" maxlength="20" 
+                                class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 text-sm uppercase text-center"
+                                oninput="updateFrameText(this.value)">
                         </div>
                     </div>
 
-                    <!-- Quality -->
-                    <div class="border-t-2 border-gray-100 pt-6">
+                    <!-- Calidad -->
+                    <div class="border-t pt-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="text-xs text-gray-500 mb-1 block">Tamaño QR</label>
-                                <select id="qr-size" class="w-full h-10 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
-                                    <option value="200">Pequeño (200px)</option>
-                                    <option value="300" selected>Mediano (300px)</option>
-                                    <option value="400">Grande (400px)</option>
-                                    <option value="500">Extra (500px)</option>
-                                    <option value="800">HD (800px)</option>
+                                <label class="text-xs text-gray-500 mb-1 block">Tamaño</label>
+                                <select id="qr-size" class="w-full h-9 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
+                                    <option value="200">Pequeño</option>
+                                    <option value="300" selected>Mediano</option>
+                                    <option value="400">Grande</option>
+                                    <option value="600">HD</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs text-gray-500 mb-1 block">Corrección de errores</label>
-                                <select id="qr-level" class="w-full h-10 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
-                                    <option value="1">Bajo (~7%)</option>
-                                    <option value="2" selected>Medio (~15%)</option>
-                                    <option value="3">Alto (~25%)</option>
-                                    <option value="4">Máximo (~30%)</option>
+                                <label class="text-xs text-gray-500 mb-1 block">Calidad</label>
+                                <select id="qr-level" class="w-full h-9 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
+                                    <option value="1">Baja</option>
+                                    <option value="2" selected>Media</option>
+                                    <option value="3">Alta</option>
+                                    <option value="4">Máxima (con logo)</option>
                                 </select>
                             </div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-2">
-                            <i class="fa-solid fa-circle-info mr-1"></i>
-                            Usa <strong>Máximo</strong> si agregas un logo
-                        </p>
                     </div>
 
                 </div>
 
-                <!-- Features -->
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="glass-panel rounded-2xl p-4 feature-card">
-                        <div class="text-indigo-500 text-2xl mb-2"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <h3 class="font-bold text-gray-800 mb-1">Personalizable</h3>
-                        <p class="text-sm text-gray-600">Colores, logos, formas</p>
-                    </div>
-                    <div class="glass-panel rounded-2xl p-4 feature-card">
-                        <div class="text-purple-500 text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3 class="font-bold text-gray-800 mb-1">Privado</h3>
-                        <p class="text-sm text-gray-600">Sin servidor externo</p>
-                    </div>
-                    <div class="glass-panel rounded-2xl p-4 feature-card">
-                        <div class="text-pink-500 text-2xl mb-2"><i class="fa-solid fa-infinity"></i></div>
-                        <h3 class="font-bold text-gray-800 mb-1">Ilimitado</h3>
-                        <p class="text-sm text-gray-600">Sin marcas de agua</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Right Panel -->
@@ -757,51 +517,38 @@
                 <div class="sticky top-8 space-y-6">
                     
                     <!-- Preview -->
-                    <div class="glass-panel rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl">
+                    <div class="glass-panel rounded-3xl p-8 text-center shadow-2xl">
                         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
                         
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Space_Grotesk']">
-                            Vista Previa
-                        </h2>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Space_Grotesk']">Vista Previa</h2>
                         
-                        <div class="relative inline-block mb-6" id="qr-container-wrapper">
-                            <div id="frame-container" class="qr-frame hidden">
-                                <svg width="400" height="400" viewBox="0 0 400 400"></svg>
-                            </div>
-                            
-                            <div id="qrcode" class="qr-wrapper bg-white p-4 rounded-xl shadow-lg inline-block">
-                                <div class="text-gray-400 p-8">
-                                    <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
-                                    <p class="text-sm">Ingresa datos para generar</p>
+                        <div class="mb-6 flex justify-center">
+                            <div class="qr-preview-box" id="qr-box">
+                                <div id="qrcode">
+                                    <div class="text-gray-400 p-8">
+                                        <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
+                                        <p class="text-sm">Ingresa datos</p>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div id="logo-overlay" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
-                                <img id="overlay-img" class="shadow-2xl" style="max-width: 60px; max-height: 60px;" />
+                                <img id="logo-overlay" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none bg-white rounded-full shadow-lg" style="max-width: 60px; max-height: 60px; padding: 4px;">
                             </div>
                         </div>
 
-                        <div id="qr-actions" class="space-y-3 opacity-50 pointer-events-none transition-all">
+                        <div id="qr-actions" class="space-y-3 opacity-50 pointer-events-none">
                             <div class="flex gap-3">
-                                <button onclick="downloadQR('png')" class="flex-1 btn-primary text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-download"></i> PNG
-                                </button>
-                                <button onclick="downloadQR('jpg')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-file-image"></i> JPG
+                                <button onclick="downloadQR()" class="flex-1 btn-primary text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-download"></i> Descargar PNG
                                 </button>
                             </div>
                             <button onclick="shareQR()" class="w-full bg-white border-2 border-gray-200 hover:border-indigo-500 text-gray-700 py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-share-nodes"></i> Compartir
                             </button>
-                            <button onclick="printQR()" class="w-full bg-gray-50 border-2 border-gray-200 hover:border-indigo-500 text-gray-700 py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-print"></i> Imprimir
-                            </button>
                         </div>
 
-                        <div id="qr-info" class="mt-4 text-sm text-gray-500 hidden">
+                        <p id="qr-status" class="mt-4 text-sm text-gray-500 hidden">
                             <i class="fa-solid fa-check-circle text-green-500 mr-1"></i>
-                            <span id="qr-data-preview"></span>
-                        </div>
+                            <span id="qr-status-text"></span>
+                        </p>
                     </div>
 
                     <!-- History -->
@@ -820,16 +567,6 @@
                         </div>
                     </div>
 
-                    <!-- Tips -->
-                    <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl">
-                        <h3 class="font-bold mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-lightbulb text-yellow-300"></i>
-                            Consejo
-                        </h3>
-                        <p class="text-sm text-white/90 leading-relaxed" id="tip-text">
-                            Si agregas un logo, usa el nivel de corrección <strong>Máximo</strong> para mantener la legibilidad.
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -842,121 +579,59 @@
     <!-- Toast -->
     <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
         <i class="fa-solid fa-check-circle text-green-400"></i>
-        <span id="toast-message">Operación exitosa</span>
+        <span id="toast-message">Mensaje</span>
     </div>
 
     <script>
-        // Global variables
+        // Variables globales
         let currentTab = 'url';
         let qrCodeObj = null;
         let history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
         let uploadedImageData = null;
         let logoImageData = null;
-        let isGradientMode = false;
-        let currentGradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
         
-        let customSettings = {
-            bodyShape: 'square',
-            eyeShape: 'square',
+        // Configuración actual
+        let config = {
+            shape: 'square',
             frame: 'none',
             frameText: '',
-            frameColor: '#000000',
-            frameTextColor: '#000000',
-            logoSize: 40,
-            logoRadius: 50,
-            transparent: false
+            logoSize: 30
         };
 
-        // Initialize when DOM is ready
+        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             updateHistoryDisplay();
-            setupDragAndDrop();
-            
-            // Setup character counter
-            const textInput = document.getElementById('input-text');
-            if (textInput) {
-                textInput.addEventListener('input', function() {
-                    const counter = document.getElementById('char-count');
-                    if (counter) {
-                        counter.textContent = this.value.length + ' caracteres';
-                    }
-                });
-            }
-
-            // Setup logo size slider
-            const logoSizeSlider = document.getElementById('logo-size');
-            if (logoSizeSlider) {
-                logoSizeSlider.addEventListener('input', function() {
-                    const display = document.getElementById('logo-size-value');
-                    if (display) {
-                        display.textContent = this.value + '%';
-                    }
-                });
-            }
-
-            // Setup frame text input
-            const frameTextInput = document.getElementById('frame-text');
-            if (frameTextInput) {
-                frameTextInput.addEventListener('input', function() {
-                    customSettings.frameText = this.value.toUpperCase();
-                    generateQR();
-                });
-            }
+            generateQR(); // Generar QR inicial vacío
         });
 
-        // Tab switching
+        // Cambiar pestaña
         function switchTab(tab) {
-            // Update tab buttons
             const tabs = ['url', 'text', 'image', 'contact', 'wifi', 'email'];
+            
             tabs.forEach(t => {
                 const btn = document.getElementById('tab-' + t);
-                if (btn) {
-                    if (t === tab) {
-                        btn.classList.remove('tab-inactive');
-                        btn.classList.add('tab-active');
-                    } else {
-                        btn.classList.remove('tab-active');
-                        btn.classList.add('tab-inactive');
-                    }
-                }
-            });
-
-            // Update forms visibility
-            tabs.forEach(t => {
                 const form = document.getElementById('form-' + t);
-                if (form) {
-                    if (t === tab) {
-                        form.classList.add('active');
-                    } else {
-                        form.classList.remove('active');
-                    }
+                
+                if (t === tab) {
+                    btn.classList.remove('tab-inactive');
+                    btn.classList.add('tab-active');
+                    form.classList.add('active');
+                } else {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                    form.classList.remove('active');
                 }
             });
-
+            
             currentTab = tab;
             generateQR();
-            updateTip(tab);
         }
 
-        function updateTip(tab) {
-            const tips = {
-                url: "Para enlaces, usa URLs cortas (acorta con bit.ly) para crear QR menos densos.",
-                text: "El límite es ~3000 caracteres. Para textos largos, considera crear un PDF.",
-                image: "Las imágenes se convierten a URL temporal. Para uso permanente, usa Imgur.",
-                contact: "El formato vCard es compatible con todos los smartphones. Incluye prefijo +34.",
-                wifi: "El QR WiFi permite conectarse automáticamente en iOS 11+ y Android 10+.",
-                email: "Prellena el asunto y cuerpo para facilitar consultas comerciales."
-            };
-            const tipElement = document.getElementById('tip-text');
-            if (tipElement) {
-                tipElement.textContent = tips[tab] || tips['url'];
-            }
-        }
-
+        // Obtener datos según pestaña
         function getQRData() {
             switch(currentTab) {
                 case 'url':
-                    const url = document.getElementById('input-url')?.value.trim() || '';
+                    let url = document.getElementById('input-url')?.value.trim() || '';
                     return url ? (url.startsWith('http') ? url : 'https://' + url) : '';
                 
                 case 'text':
@@ -969,9 +644,8 @@
                     const name = document.getElementById('contact-name')?.value || '';
                     const phone = document.getElementById('contact-phone')?.value || '';
                     const email = document.getElementById('contact-email')?.value || '';
-                    const org = document.getElementById('contact-org')?.value || '';
                     if (!name && !phone) return '';
-                    return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nORG:${org}\nEND:VCARD`;
+                    return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nEND:VCARD`;
                 
                 case 'wifi':
                     const ssid = document.getElementById('wifi-ssid')?.value || '';
@@ -992,146 +666,134 @@
             }
         }
 
+        // Generar QR
         function generateQR() {
             const data = getQRData();
             const container = document.getElementById('qrcode');
             const actions = document.getElementById('qr-actions');
-            const info = document.getElementById('qr-info');
-            const preview = document.getElementById('qr-data-preview');
-
-            if (!data || !container) {
-                if (container) {
-                    container.innerHTML = `
-                        <div class="text-gray-400 p-8">
-                            <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
-                            <p class="text-sm">Ingresa datos para generar</p>
-                        </div>
-                    `;
-                }
-                if (actions) {
-                    actions.classList.add('opacity-50', 'pointer-events-none');
-                }
-                if (info) {
-                    info.classList.add('hidden');
-                }
-                const logoOverlay = document.getElementById('logo-overlay');
-                if (logoOverlay) {
-                    logoOverlay.classList.add('hidden');
-                }
+            const status = document.getElementById('qr-status');
+            
+            if (!data) {
+                container.innerHTML = `
+                    <div class="text-gray-400 p-8">
+                        <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
+                        <p class="text-sm">Ingresa datos para generar</p>
+                    </div>
+                `;
+                actions.classList.add('opacity-50', 'pointer-events-none');
+                status.classList.add('hidden');
+                document.getElementById('logo-overlay').classList.add('hidden');
                 return;
             }
 
+            // Limpiar contenedor
             container.innerHTML = '';
             
             const size = parseInt(document.getElementById('qr-size')?.value || 300);
-            const color = document.getElementById('qr-color')?.value || '#000000';
-            const bgColor = customSettings.transparent ? '#ffffff00' : (document.getElementById('bg-color')?.value || '#ffffff');
+            const fgColor = document.getElementById('qr-color')?.value || '#000000';
+            const bgColor = document.getElementById('bg-color')?.value || '#ffffff';
             const level = parseInt(document.getElementById('qr-level')?.value || 2);
 
             try {
+                // Crear QR
                 qrCodeObj = new QRCode(container, {
                     text: data,
                     width: size,
                     height: size,
-                    colorDark: color,
+                    colorDark: fgColor,
                     colorLight: bgColor,
                     correctLevel: level
                 });
 
+                // Aplicar personalizaciones después de generar
                 setTimeout(() => {
-                    applyCustomStyling(container, size);
-                }, 50);
+                    applyCustomizations(size);
+                }, 100);
 
-                updateLogoOverlay(size);
-                updateFrame(size);
+                // Mostrar controles
+                actions.classList.remove('opacity-50', 'pointer-events-none');
+                status.classList.remove('hidden');
+                document.getElementById('qr-status-text').textContent = 'QR generado correctamente';
 
-                if (actions) {
-                    actions.classList.remove('opacity-50', 'pointer-events-none');
-                }
-                
-                if (preview) {
-                    let previewText = data;
-                    if (previewText.length > 50) previewText = previewText.substring(0, 50) + '...';
-                    preview.textContent = previewText;
-                }
-                
-                if (info) {
-                    info.classList.remove('hidden');
-                }
-
+                // Guardar en historial
                 clearTimeout(window.historyTimeout);
                 window.historyTimeout = setTimeout(() => addToHistory(data, currentTab), 1000);
 
             } catch (e) {
-                console.error('QR Generation error:', e);
-                container.innerHTML = '<p class="text-red-500 p-4">Error al generar QR. Datos demasiado largos.</p>';
+                console.error('Error:', e);
+                container.innerHTML = '<p class="text-red-500 p-4">Error al generar QR</p>';
             }
         }
 
-        function applyCustomStyling(container, size) {
+        // Aplicar personalizaciones
+        function applyCustomizations(size) {
+            const container = document.getElementById('qrcode');
             const canvas = container.querySelector('canvas');
             if (!canvas) return;
 
+            // Crear nuevo canvas para modificaciones
             const newCanvas = document.createElement('canvas');
             newCanvas.width = size;
             newCanvas.height = size;
             const ctx = newCanvas.getContext('2d');
 
-            if (!customSettings.transparent) {
-                ctx.fillStyle = document.getElementById('bg-color')?.value || '#ffffff';
-                ctx.fillRect(0, 0, size, size);
-            }
+            // Fondo
+            const bgColor = document.getElementById('bg-color')?.value || '#ffffff';
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, size, size);
 
+            // Dibujar QR con forma personalizada
             const imgData = canvas.getContext('2d').getImageData(0, 0, size, size);
             const data = imgData.data;
-            const cellSize = Math.floor(size / 25);
-            const color = document.getElementById('qr-color')?.value || '#000000';
+            const cellSize = size / 25;
+            const fgColor = document.getElementById('qr-color')?.value || '#000000';
+
+            ctx.fillStyle = fgColor;
 
             for (let y = 0; y < size; y += cellSize) {
                 for (let x = 0; x < size; x += cellSize) {
                     const i = (Math.floor(y) * size + Math.floor(x)) * 4;
+                    
+                    // Detectar si es un "ojo" del QR (esquinas)
+                    const isEye = (x < cellSize * 7 && y < cellSize * 7) || 
+                                  (x > cellSize * 18 && y < cellSize * 7) || 
+                                  (x < cellSize * 7 && y > cellSize * 18);
+                    
                     if (data[i] < 128) {
-                        drawShape(ctx, x, y, cellSize - 1, color);
+                        if (isEye) {
+                            // Dibujar ojos siempre cuadrados (para legibilidad)
+                            ctx.fillRect(x, y, cellSize - 1, cellSize - 1);
+                        } else {
+                            // Dibujar cuerpo con forma seleccionada
+                            drawShape(ctx, x, y, cellSize - 1, config.shape);
+                        }
                     }
                 }
             }
 
+            // Reemplazar canvas original
             canvas.width = size;
             canvas.height = size;
             canvas.getContext('2d').drawImage(newCanvas, 0, 0);
+
+            // Aplicar logo si existe
+            updateLogo(size);
+
+            // Aplicar marco
+            drawFrame(size);
         }
 
-        function drawShape(ctx, x, y, size, color) {
-            ctx.fillStyle = color;
-            
-            if (isGradientMode) {
-                const gradient = ctx.createLinearGradient(x, y, x + size, y + size);
-                const colors = currentGradient.match(/#[a-fA-F0-9]{6}/g);
-                if (colors && colors.length >= 2) {
-                    gradient.addColorStop(0, colors[0]);
-                    gradient.addColorStop(1, colors[1]);
-                    ctx.fillStyle = gradient;
-                }
-            }
-
-            switch(customSettings.bodyShape) {
-                case 'rounded':
-                    roundRect(ctx, x, y, size, size, size * 0.3);
-                    break;
+        function drawShape(ctx, x, y, size, shape) {
+            switch(shape) {
                 case 'dots':
                     ctx.beginPath();
                     ctx.arc(x + size/2, y + size/2, size/2.5, 0, Math.PI * 2);
                     ctx.fill();
                     break;
-                case 'diamond':
-                    ctx.beginPath();
-                    ctx.moveTo(x + size/2, y);
-                    ctx.lineTo(x + size, y + size/2);
-                    ctx.lineTo(x + size/2, y + size);
-                    ctx.lineTo(x, y + size/2);
-                    ctx.closePath();
-                    ctx.fill();
+                case 'rounded':
+                    roundRect(ctx, x, y, size, size, size * 0.3);
                     break;
+                case 'square':
                 default:
                     ctx.fillRect(x, y, size, size);
             }
@@ -1152,156 +814,104 @@
             ctx.fill();
         }
 
-        function updateLogoOverlay(qrSize) {
+        function updateLogo(qrSize) {
             const overlay = document.getElementById('logo-overlay');
-            const img = document.getElementById('overlay-img');
-            
-            if (!overlay || !img) return;
             
             if (logoImageData) {
+                overlay.src = logoImageData;
                 overlay.classList.remove('hidden');
-                img.src = logoImageData;
                 
-                const size = (qrSize * customSettings.logoSize) / 100;
-                img.style.width = size + 'px';
-                img.style.height = size + 'px';
-                img.style.borderRadius = customSettings.logoRadius + '%';
+                const size = (qrSize * config.logoSize) / 100;
+                overlay.style.width = size + 'px';
+                overlay.style.height = size + 'px';
             } else {
                 overlay.classList.add('hidden');
             }
         }
 
-        function updateFrame(size) {
-            const frameContainer = document.getElementById('frame-container');
-            if (!frameContainer) return;
+        function drawFrame(qrSize) {
+            // Eliminar marco anterior si existe
+            const oldFrame = document.getElementById('qr-frame-element');
+            if (oldFrame) oldFrame.remove();
+
+            if (config.frame === 'none') return;
+
+            const box = document.getElementById('qr-box');
+            const padding = 40;
+            const frameSize = qrSize + (padding * 2);
             
-            const svg = frameContainer.querySelector('svg');
-            if (!svg) return;
-            
-            if (customSettings.frame === 'none') {
-                frameContainer.classList.add('hidden');
-                return;
-            }
-            
-            frameContainer.classList.remove('hidden');
-            const framePadding = 80;
-            const textHeight = customSettings.frameText ? 40 : 0;
-            const totalSize = size + framePadding;
-            
-            svg.setAttribute('width', totalSize);
-            svg.setAttribute('height', totalSize + textHeight);
-            svg.setAttribute('viewBox', `0 0 ${totalSize} ${totalSize + textHeight}`);
-            
-            const color = document.getElementById('frame-color')?.value || '#000000';
-            let path = '';
-            
-            switch(customSettings.frame) {
+            const frame = document.createElement('div');
+            frame.id = 'qr-frame-element';
+            frame.style.position = 'absolute';
+            frame.style.top = '50%';
+            frame.style.left = '50%';
+            frame.style.transform = 'translate(-50%, -50%)';
+            frame.style.width = frameSize + 'px';
+            frame.style.height = frameSize + 'px';
+            frame.style.pointerEvents = 'none';
+            frame.style.zIndex = '-1';
+
+            const fgColor = document.getElementById('qr-color')?.value || '#000000';
+
+            switch(config.frame) {
                 case 'simple':
-                    path = `<rect x="20" y="20" width="${totalSize-40}" height="${totalSize-40}" fill="none" stroke="${color}" stroke-width="8" rx="4"/>`;
+                    frame.style.border = `6px solid ${fgColor}`;
                     break;
                 case 'rounded':
-                    path = `<rect x="20" y="20" width="${totalSize-40}" height="${totalSize-40}" fill="none" stroke="${color}" stroke-width="8" rx="20"/>`;
+                    frame.style.border = `6px solid ${fgColor}`;
+                    frame.style.borderRadius = '20px';
                     break;
                 case 'elegant':
-                    const cornerSize = 30;
-                    path = `
-                        <rect x="40" y="40" width="${totalSize-80}" height="${totalSize-80}" fill="none" stroke="${color}" stroke-width="4" rx="4"/>
-                        <circle cx="40" cy="40" r="8" fill="${color}"/>
-                        <circle cx="${totalSize-40}" cy="40" r="8" fill="${color}"/>
-                        <circle cx="40" cy="${totalSize-40}" r="8" fill="${color}"/>
-                        <circle cx="${totalSize-40}" cy="${totalSize-40}" r="8" fill="${color}"/>
+                    frame.innerHTML = `
+                        <div style="position: absolute; inset: 0; border: 4px solid ${fgColor};">
+                            <div style="position: absolute; top: -6px; left: -6px; width: 16px; height: 16px; background: ${fgColor}; border-radius: 50%;"></div>
+                            <div style="position: absolute; top: -6px; right: -6px; width: 16px; height: 16px; background: ${fgColor}; border-radius: 50%;"></div>
+                            <div style="position: absolute; bottom: -6px; left: -6px; width: 16px; height: 16px; background: ${fgColor}; border-radius: 50%;"></div>
+                            <div style="position: absolute; bottom: -6px; right: -6px; width: 16px; height: 16px; background: ${fgColor}; border-radius: 50%;"></div>
+                        </div>
                     `;
                     break;
             }
-            
-            if (customSettings.frameText) {
-                const textColor = document.getElementById('frame-text-color')?.value || '#000000';
-                path += `<text x="${totalSize/2}" y="${totalSize-10}" text-anchor="middle" fill="${textColor}" font-size="20" font-weight="bold" font-family="Arial, sans-serif">${customSettings.frameText}</text>`;
+
+            // Texto del marco
+            if (config.frameText && config.frame !== 'none') {
+                const textDiv = document.createElement('div');
+                textDiv.style.position = 'absolute';
+                textDiv.style.bottom = '-35px';
+                textDiv.style.left = '0';
+                textDiv.style.right = '0';
+                textDiv.style.textAlign = 'center';
+                textDiv.style.fontWeight = 'bold';
+                textDiv.style.fontSize = '18px';
+                textDiv.style.color = fgColor;
+                textDiv.style.textTransform = 'uppercase';
+                textDiv.textContent = config.frameText;
+                frame.appendChild(textDiv);
+                frame.style.height = (frameSize + 40) + 'px';
             }
-            
-            svg.innerHTML = path;
-            
-            frameContainer.style.width = totalSize + 'px';
-            frameContainer.style.height = (totalSize + textHeight) + 'px';
+
+            box.style.position = 'relative';
+            box.appendChild(frame);
         }
 
-        function updateFrameText() {
-            const input = document.getElementById('frame-text');
-            if (input) {
-                customSettings.frameText = input.value.toUpperCase();
-                generateQR();
-            }
-        }
-
-        // Customization functions
-        function updateColorPreview(type) {
-            const color = type === 'fg' 
-                ? (document.getElementById('qr-color')?.value || '#000000')
-                : (document.getElementById('bg-color')?.value || '#ffffff');
-            const preview = document.getElementById(type + '-color-preview');
-            if (preview) {
-                preview.style.background = color;
-            }
-        }
-
-        function setGradientMode() {
-            isGradientMode = !isGradientMode;
-            const btn = document.getElementById('gradient-btn');
-            const presets = document.getElementById('gradient-presets');
+        // Funciones de personalización
+        function updateColors() {
+            const fg = document.getElementById('qr-color').value;
+            const bg = document.getElementById('bg-color').value;
             
-            if (btn) {
-                if (isGradientMode) {
-                    btn.classList.add('ring-4', 'ring-indigo-300');
-                } else {
-                    btn.classList.remove('ring-4', 'ring-indigo-300');
-                }
-            }
-            
-            if (presets) {
-                presets.classList.toggle('hidden', !isGradientMode);
-            }
+            document.getElementById('preview-fg').style.background = fg;
+            document.getElementById('preview-bg').style.background = bg;
             
             generateQR();
         }
 
-        function applyGradient(gradient) {
-            currentGradient = gradient;
-            document.querySelectorAll('.preset-gradient').forEach(el => el.classList.remove('active'));
-            if (event && event.target) {
-                event.target.classList.add('active');
-            }
-            generateQR();
-        }
-
-        function toggleTransparency() {
-            const checkbox = document.getElementById('transparent-bg');
-            customSettings.transparent = checkbox ? checkbox.checked : false;
-            generateQR();
-        }
-
-        function setBodyShape(shape, btn) {
-            customSettings.bodyShape = shape;
-            document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-            generateQR();
-        }
-
-        function setEyeShape(shape, btn) {
-            customSettings.eyeShape = shape;
-            document.querySelectorAll('.eye-shape-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-            generateQR();
-        }
-
-        function selectFrame(frame, el) {
-            customSettings.frame = frame;
-            document.querySelectorAll('.frame-option').forEach(f => f.classList.remove('selected'));
-            if (el) el.classList.add('selected');
+        function setShape(shape, btn) {
+            config.shape = shape;
             
-            const textOptions = document.getElementById('frame-text-options');
-            if (textOptions) {
-                textOptions.classList.toggle('hidden', frame === 'none');
-            }
+            document.querySelectorAll('.shape-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
             
             generateQR();
         }
@@ -1311,7 +921,7 @@
             if (!file) return;
 
             if (file.size > 2 * 1024 * 1024) {
-                showToast('El logo es demasiado grande. Máximo 2MB.', 'error');
+                showToast('Logo demasiado grande. Máximo 2MB', 'error');
                 return;
             }
 
@@ -1319,284 +929,136 @@
             reader.onload = function(e) {
                 logoImageData = e.target.result;
                 
-                const placeholder = document.getElementById('logo-placeholder');
-                const previewContainer = document.getElementById('logo-preview-container');
-                const preview = document.getElementById('logo-preview');
+                document.getElementById('logo-area').classList.add('hidden');
+                document.getElementById('logo-preview-area').classList.remove('hidden');
+                document.getElementById('logo-img').src = logoImageData;
                 
-                if (placeholder) placeholder.classList.add('hidden');
-                if (previewContainer) previewContainer.classList.remove('hidden');
-                if (preview) preview.src = logoImageData;
-                
-                const qrLevel = document.getElementById('qr-level');
-                if (qrLevel && qrLevel.value < 3) {
-                    qrLevel.value = 4;
-                    showToast('Corrección ajustada a Máximo para el logo');
+                // Auto-ajustar calidad si es necesario
+                const level = document.getElementById('qr-level');
+                if (level && level.value < 3) {
+                    level.value = '4';
+                    showToast('Calidad ajustada a Máxima para soportar el logo');
                 }
                 
                 generateQR();
-                showToast('Logo cargado correctamente');
+                showToast('Logo agregado');
             };
             reader.readAsDataURL(file);
         }
 
         function removeLogo() {
             logoImageData = null;
-            
-            const input = document.getElementById('logo-input');
-            if (input) input.value = '';
-            
-            const placeholder = document.getElementById('logo-placeholder');
-            const previewContainer = document.getElementById('logo-preview-container');
-            
-            if (placeholder) placeholder.classList.remove('hidden');
-            if (previewContainer) previewContainer.classList.add('hidden');
-            
+            document.getElementById('logo-input').value = '';
+            document.getElementById('logo-area').classList.remove('hidden');
+            document.getElementById('logo-preview-area').classList.add('hidden');
             generateQR();
             showToast('Logo eliminado');
         }
 
-        function updateLogoSize() {
-            const sizeSlider = document.getElementById('logo-size');
-            const radiusSlider = document.getElementById('logo-radius');
+        function updateLogoSize(value) {
+            config.logoSize = value;
+            document.getElementById('logo-size-display').textContent = value;
+            generateQR();
+        }
+
+        function setFrame(frameType, element) {
+            config.frame = frameType;
             
-            if (sizeSlider) customSettings.logoSize = sizeSlider.value;
-            if (radiusSlider) customSettings.logoRadius = radiusSlider.value;
+            document.querySelectorAll('.frame-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            const textSection = document.getElementById('frame-text-section');
+            if (frameType !== 'none') {
+                textSection.classList.remove('hidden');
+            } else {
+                textSection.classList.add('hidden');
+            }
+            
+            generateQR();
+        }
+
+        function updateFrameText(text) {
+            config.frameText = text.toUpperCase();
+            generateQR();
         }
 
         function resetCustomization() {
-            // Reset values
-            const qrColor = document.getElementById('qr-color');
-            const bgColor = document.getElementById('bg-color');
-            const transparentBg = document.getElementById('transparent-bg');
-            const logoSize = document.getElementById('logo-size');
-            const logoRadius = document.getElementById('logo-radius');
-            const frameText = document.getElementById('frame-text');
+            // Resetear valores
+            document.getElementById('qr-color').value = '#000000';
+            document.getElementById('bg-color').value = '#ffffff';
+            document.getElementById('logo-size').value = '30';
+            document.getElementById('frame-text-input').value = '';
             
-            if (qrColor) qrColor.value = '#000000';
-            if (bgColor) bgColor.value = '#ffffff';
-            if (transparentBg) transparentBg.checked = false;
-            if (logoSize) logoSize.value = 40;
-            if (logoRadius) logoRadius.value = 50;
-            if (frameText) frameText.value = '';
-            
-            customSettings = {
-                bodyShape: 'square',
-                eyeShape: 'square',
+            // Resetear config
+            config = {
+                shape: 'square',
                 frame: 'none',
                 frameText: '',
-                frameColor: '#000000',
-                frameTextColor: '#000000',
-                logoSize: 40,
-                logoRadius: 50,
-                transparent: false
+                logoSize: 30
             };
             
-            isGradientMode = false;
+            // Resetear UI
+            document.getElementById('preview-fg').style.background = '#000000';
+            document.getElementById('preview-bg').style.background = '#ffffff';
+            document.getElementById('logo-size-display').textContent = '30';
             
-            const presets = document.getElementById('gradient-presets');
-            const gradientBtn = document.getElementById('gradient-btn');
+            document.querySelectorAll('.shape-btn').forEach((b, i) => {
+                b.classList.toggle('active', i === 0);
+            });
             
-            if (presets) presets.classList.add('hidden');
-            if (gradientBtn) gradientBtn.classList.remove('ring-4', 'ring-indigo-300');
+            document.querySelectorAll('.frame-option').forEach((f, i) => {
+                f.classList.toggle('selected', i === 0);
+            });
             
-            // Reset UI
-            document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
-            const firstShape = document.querySelector('.shape-btn');
-            if (firstShape) firstShape.classList.add('active');
+            document.getElementById('frame-text-section').classList.add('hidden');
             
-            document.querySelectorAll('.eye-shape-btn').forEach(b => b.classList.remove('active'));
-            const firstEye = document.querySelector('.eye-shape-btn');
-            if (firstEye) firstEye.classList.add('active');
-            
-            document.querySelectorAll('.frame-option').forEach(f => f.classList.remove('selected'));
-            const firstFrame = document.querySelector('.frame-option');
-            if (firstFrame) firstFrame.classList.add('selected');
-            
-            const textOptions = document.getElementById('frame-text-options');
-            if (textOptions) textOptions.classList.add('hidden');
-            
-            updateColorPreview('fg');
-            updateColorPreview('bg');
             removeLogo();
-            
             generateQR();
             showToast('Personalización restaurada');
         }
 
-        // Legacy functions
+        // Funciones de utilidad
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             if (file.size > 5 * 1024 * 1024) {
-                showToast('La imagen es demasiado grande. Máximo 5MB.', 'error');
+                showToast('Imagen demasiado grande', 'error');
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const img = document.getElementById('preview-img');
-                if (img) img.src = e.target.result;
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview').classList.remove('hidden');
                 
-                const placeholder = document.getElementById('upload-placeholder');
-                const preview = document.getElementById('upload-preview');
-                
-                if (placeholder) placeholder.classList.add('hidden');
-                if (preview) preview.classList.remove('hidden');
-                
-                const fakeUrl = 'https://qrpro.app/img/' + Math.random().toString(36).substring(7);
-                uploadedImageData = fakeUrl;
-                
-                const urlContainer = document.getElementById('image-url-container');
-                const urlInput = document.getElementById('image-url-input');
-                
-                if (urlContainer) urlContainer.classList.remove('hidden');
-                if (urlInput) urlInput.value = fakeUrl;
-                
+                uploadedImageData = 'https://example.com/img/' + Date.now();
                 generateQR();
-                showToast('Imagen cargada correctamente');
+                showToast('Imagen cargada');
             };
             reader.readAsDataURL(file);
         }
 
-        function setupDragAndDrop() {
-            const zone = document.getElementById('upload-zone');
-            if (!zone) return;
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                zone.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                zone.addEventListener(eventName, () => zone.classList.add('dragover'), false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                zone.addEventListener(eventName, () => zone.classList.remove('dragover'), false);
-            });
-            
-            zone.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                if (files.length) {
-                    const input = document.getElementById('input-image');
-                    if (input) {
-                        input.files = files;
-                        handleImageUpload({ target: { files: files } });
-                    }
-                }
-            }
-        }
-
-        function copyImageUrl() {
-            const input = document.getElementById('image-url-input');
-            if (!input) return;
-            
-            input.select();
-            document.execCommand('copy');
-            showToast('URL copiada al portapapeles');
-        }
-
         function togglePassword(id) {
             const input = document.getElementById(id);
-            if (!input) return;
-            
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        function downloadQR(format) {
-            const wrapper = document.getElementById('qr-container-wrapper');
-            if (!wrapper) return;
-            
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            const qrCanvas = document.querySelector('#qrcode canvas');
-            if (!qrCanvas) {
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
                 showToast('Genera un QR primero', 'error');
                 return;
             }
             
-            const size = parseInt(document.getElementById('qr-size')?.value || 300);
-            const hasFrame = customSettings.frame !== 'none';
-            const framePadding = hasFrame ? 80 : 0;
-            const textHeight = (hasFrame && customSettings.frameText) ? 40 : 0;
-            
-            canvas.width = size + framePadding;
-            canvas.height = size + framePadding + textHeight;
-            
-            if (!customSettings.transparent) {
-                ctx.fillStyle = document.getElementById('bg-color')?.value || '#ffffff';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-            
-            if (hasFrame) {
-                const svg = document.querySelector('#frame-container svg');
-                if (svg) {
-                    const svgData = new XMLSerializer().serializeToString(svg);
-                    const img = new Image();
-                    img.onload = function() {
-                        ctx.drawImage(img, 0, 0);
-                        ctx.drawImage(qrCanvas, framePadding/2, framePadding/2);
-                        
-                        if (logoImageData) {
-                            const logoImg = document.getElementById('overlay-img');
-                            if (logoImg) {
-                                const logoSize = (size * customSettings.logoSize) / 100;
-                                const x = (canvas.width - logoSize) / 2;
-                                const y = (size + framePadding - logoSize) / 2;
-                                
-                                ctx.save();
-                                ctx.beginPath();
-                                const radius = (customSettings.logoRadius / 100) * (logoSize / 2);
-                                ctx.roundRect(x, y, logoSize, logoSize, radius);
-                                ctx.clip();
-                                ctx.drawImage(logoImg, x, y, logoSize, logoSize);
-                                ctx.restore();
-                            }
-                        }
-                        
-                        const link = document.createElement('a');
-                        link.download = 'qr-code-' + Date.now() + '.' + format;
-                        link.href = canvas.toDataURL('image/' + (format === 'jpg' ? 'jpeg' : 'png'));
-                        link.click();
-                        showToast('QR descargado como ' + format.toUpperCase());
-                    };
-                    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
-                    return;
-                }
-            }
-            
-            ctx.drawImage(qrCanvas, framePadding/2, framePadding/2);
-            
-            if (logoImageData) {
-                const logoImg = document.getElementById('overlay-img');
-                if (logoImg) {
-                    const logoSize = (size * customSettings.logoSize) / 100;
-                    const x = (canvas.width - logoSize) / 2;
-                    const y = (size + framePadding - logoSize) / 2;
-                    
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(x + logoSize/2, y + logoSize/2, logoSize/2, 0, Math.PI * 2);
-                    ctx.clip();
-                    ctx.drawImage(logoImg, x, y, logoSize, logoSize);
-                    ctx.restore();
-                }
-            }
-            
             const link = document.createElement('a');
-            link.download = 'qr-code-' + Date.now() + '.' + format;
-            link.href = canvas.toDataURL('image/' + (format === 'jpg' ? 'jpeg' : 'png'));
+            link.download = 'qr-code-' + Date.now() + '.png';
+            link.href = canvas.toDataURL('image/png');
             link.click();
-            showToast('QR descargado como ' + format.toUpperCase());
+            showToast('QR descargado');
         }
 
         function shareQR() {
@@ -1611,47 +1073,18 @@
                 if (navigator.share && navigator.canShare({ files: [file] })) {
                     navigator.share({
                         title: 'Mi Código QR',
-                        text: 'Escanea este código QR',
                         files: [file]
-                    }).catch(() => {
-                        copyToClipboard();
-                    });
+                    }).catch(() => showToast('Error al compartir', 'error'));
                 } else {
-                    copyToClipboard();
+                    showToast('Compartir no disponible en este navegador', 'error');
                 }
             });
         }
 
-        function copyToClipboard() {
-            const canvas = document.querySelector('#qrcode canvas');
-            if (!canvas) return;
-            
-            canvas.toBlob(blob => {
-                const item = new ClipboardItem({ 'image/png': blob });
-                navigator.clipboard.write([item]).then(() => {
-                    showToast('QR copiado al portapapeles');
-                }).catch(() => {
-                    showToast('Error al copiar', 'error');
-                });
-            });
-        }
-
-        function printQR() {
-            const canvas = document.querySelector('#qrcode canvas');
-            if (!canvas) {
-                showToast('Genera un QR primero', 'error');
-                return;
-            }
-            
-            const win = window.open();
-            win.document.write('<img src="' + canvas.toDataURL() + '" style="max-width:100%"/>');
-            win.print();
-            win.close();
-        }
-
+        // Historial
         function addToHistory(data, type) {
             const item = {
-                data: data.substring(0, 100),
+                data: data.substring(0, 50),
                 type: type,
                 time: new Date().toLocaleTimeString(),
                 fullData: data
@@ -1666,7 +1099,6 @@
 
         function updateHistoryDisplay() {
             const container = document.getElementById('history-list');
-            if (!container) return;
             
             if (history.length === 0) {
                 container.innerHTML = '<p class="text-sm text-gray-400 text-center py-4">No hay QR generados aún</p>';
@@ -1674,59 +1106,39 @@
             }
 
             const icons = {
-                url: 'fa-link',
-                text: 'fa-font',
-                image: 'fa-image',
-                contact: 'fa-address-card',
-                wifi: 'fa-wifi',
-                email: 'fa-envelope'
+                url: 'fa-link', text: 'fa-font', image: 'fa-image',
+                contact: 'fa-address-card', wifi: 'fa-wifi', email: 'fa-envelope'
             };
 
             container.innerHTML = history.map((item, idx) => `
-                <div class="history-item flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-white/50" onclick="loadHistoryItem(${idx})">
+                <div class="history-item flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-white/50" onclick="loadHistory(${idx})">
                     <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600">
-                        <i class="fa-solid ${icons[item.type] || 'fa-qrcode'}"></i>
+                        <i class="fa-solid ${icons[item.type]}"></i>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-800 truncate">${escapeHtml(item.data)}</p>
-                        <p class="text-xs text-gray-500">${item.time} • ${item.type}</p>
+                        <p class="text-sm font-medium text-gray-800 truncate">${item.data}</p>
+                        <p class="text-xs text-gray-500">${item.time}</p>
                     </div>
-                    <button onclick="event.stopPropagation(); loadHistoryItem(${idx})" class="text-indigo-500 hover:text-indigo-700 p-2">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
                 </div>
             `).join('');
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function loadHistoryItem(idx) {
+        function loadHistory(idx) {
             const item = history[idx];
-            if (!item) return;
-            
             switchTab(item.type);
             
+            // Restaurar datos básicos
             switch(item.type) {
                 case 'url':
-                    const urlInput = document.getElementById('input-url');
-                    if (urlInput) urlInput.value = item.fullData;
+                    document.getElementById('input-url').value = item.fullData;
                     break;
                 case 'text':
-                    const textInput = document.getElementById('input-text');
-                    if (textInput) {
-                        textInput.value = item.fullData;
-                        const counter = document.getElementById('char-count');
-                        if (counter) counter.textContent = item.fullData.length + ' caracteres';
-                    }
+                    document.getElementById('input-text').value = item.fullData;
                     break;
             }
             
             generateQR();
-            showToast('Datos restaurados del historial');
+            showToast('Historial cargado');
         }
 
         function clearHistory() {
@@ -1736,24 +1148,14 @@
             showToast('Historial borrado');
         }
 
+        // Toast
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const msgEl = document.getElementById('toast-message');
-            const icon = toast?.querySelector('i');
-            
-            if (!toast || !msgEl) return;
+            const icon = toast.querySelector('i');
             
             msgEl.textContent = message;
-            
-            if (icon) {
-                if (type === 'error') {
-                    icon.className = 'fa-solid fa-circle-xmark text-red-400';
-                } else if (type === 'info') {
-                    icon.className = 'fa-solid fa-circle-info text-blue-400';
-                } else {
-                    icon.className = 'fa-solid fa-check-circle text-green-400';
-                }
-            }
+            icon.className = type === 'error' ? 'fa-solid fa-circle-xmark text-red-400' : 'fa-solid fa-check-circle text-green-400';
             
             toast.classList.remove('translate-y-20', 'opacity-0');
             
@@ -1762,23 +1164,17 @@
             }, 3000);
         }
 
-        // Animation styles
+        // Animaciones CSS
         const style = document.createElement('style');
         style.textContent = `
             @keyframes blob {
-                0% { transform: translate(0px, 0px) scale(1); }
+                0%, 100% { transform: translate(0px, 0px) scale(1); }
                 33% { transform: translate(30px, -50px) scale(1.1); }
                 66% { transform: translate(-20px, 20px) scale(0.9); }
                 100% { transform: translate(0px, 0px) scale(1); }
             }
             .animate-blob {
                 animation: blob 7s infinite;
-            }
-            .animation-delay-2000 {
-                animation-delay: 2s;
-            }
-            .animation-delay-4000 {
-                animation-delay: 4s;
             }
         `;
         document.head.appendChild(style);
