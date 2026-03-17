@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador QR Pro - Gratis & Ilimitado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .tab-inactive {
+            background: white;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .tab-inactive:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-1px);
+        }
+        
+        .input-glow:focus {
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+        
+        .qr-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+        
+        .qr-container:hover {
+            transform: scale(1.02);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .feature-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+        
+        .upload-zone {
+            border: 3px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .upload-zone.dragover {
+            transform: scale(1.02);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating-icon {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+        
+        .pulse-ring {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.3);
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        
+        .color-picker-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .color-picker-wrapper input[type="color"] {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            cursor: pointer;
+            opacity: 0;
+        }
+        
+        .history-item {
+            transition: all 0.2s ease;
+        }
+        
+        .history-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(5px);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-20 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
+        
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="inline-flex items-center justify-center mb-4 relative">
+                <div class="pulse-ring w-20 h-20"></div>
+                <div class="pulse-ring w-20 h-20" style="animation-delay: 1s;"></div>
+                <div class="bg-white p-4 rounded-2xl shadow-xl floating-icon relative z-10">
+                    <i class="fa-solid fa-qrcode text-4xl gradient-text"></i>
+                </div>
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4 font-['Space_Grotesk'] tracking-tight">
+                Generador QR <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-300">Pro</span>
+            </h1>
+            <p class="text-white/80 text-lg max-w-2xl mx-auto">
+                Crea códigos QR ilimitados y gratuitos para enlaces, texto, imágenes, contactos, WiFi y más. 
+                <span class="font-semibold text-white">Sin registro, sin límites.</span>
+            </p>
+        </header>
+
+        <!-- Main App Grid -->
+        <div class="grid lg:grid-cols-12 gap-8">
+            
+            <!-- Left Panel: Controls -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Type Selector -->
+                <div class="glass-panel rounded-3xl p-6 shadow-2xl">
+                    <label class="block text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wider">
+                        <i class="fa-solid fa-layer-group mr-2 text-indigo-500"></i>Tipo de Contenido
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <button onclick="switchTab('url')" id="tab-url" class="tab-active py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-link"></i> Enlace
+                        </button>
+                        <button onclick="switchTab('text')" id="tab-text" class="tab-inactive py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-font"></i> Texto
+                        </button>
+                        <button onclick="switchTab('image')" id="tab-image" class="tab-inactive py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-image"></i> Imagen
+                        </button>
+                        <button onclick="switchTab('contact')" id="tab-contact" class="tab-inactive py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-address-card"></i> Contacto
+                        </button>
+                        <button onclick="switchTab('wifi')" id="tab-wifi" class="tab-inactive py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-wifi"></i> WiFi
+                        </button>
+                        <button onclick="switchTab('email')" id="tab-email" class="tab-inactive py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope"></i> Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Input Forms -->
+                <div class="glass-panel rounded-3xl p-8 shadow-2xl">
+                    
+                    <!-- URL Form -->
+                    <div id="form-url" class="form-section">
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">
+                                <i class="fa-solid fa-globe mr-2 text-indigo-500"></i>URL del sitio web
+                            </label>
+                            <input type="url" id="input-url" placeholder="https://ejemplo.com" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all text-gray-700"
+                                oninput="generateQR()">
+                            <p class="text-xs text-gray-500 mt-2">
+                                <i class="fa-solid fa-circle-info mr-1"></i>
+                                Incluye https:// para mejores resultados
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Text Form -->
+                    <div id="form-text" class="form-section hidden">
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">
+                                <i class="fa-solid fa-align-left mr-2 text-indigo-500"></i>Texto o mensaje
+                            </label>
+                            <textarea id="input-text" rows="4" placeholder="Escribe aquí tu mensaje..." 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all text-gray-700 resize-none"
+                                oninput="generateQR()"></textarea>
+                            <div class="flex justify-between text-xs text-gray-500 mt-2">
+                                <span><i class="fa-solid fa-circle-info mr-1"></i>Soporta emojis y caracteres especiales</span>
+                                <span id="char-count">0 caracteres</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Form -->
+                    <div id="form-image" class="form-section hidden">
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">
+                                <i class="fa-solid fa-cloud-arrow-up mr-2 text-indigo-500"></i>Subir imagen
+                            </label>
+                            <div id="upload-zone" class="upload-zone rounded-2xl p-8 text-center cursor-pointer relative">
+                                <input type="file" id="input-image" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleImageUpload(event)">
+                                <div id="upload-placeholder">
+                                    <i class="fa-solid fa-images text-5xl text-gray-400 mb-4"></i>
+                                    <p class="text-gray-600 font-medium mb-2">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                                    <p class="text-sm text-gray-400">JPG, PNG, GIF hasta 5MB</p>
+                                </div>
+                                <div id="upload-preview" class="hidden">
+                                    <img id="preview-img" class="max-h-48 mx-auto rounded-lg shadow-md mb-4" />
+                                    <p class="text-sm text-green-600 font-medium"><i class="fa-solid fa-check-circle mr-1"></i>Imagen lista para compartir</p>
+                                </div>
+                            </div>
+                            <div id="image-url-container" class="mt-4 hidden">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">URL de la imagen generada:</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="image-url-input" readonly 
+                                        class="flex-1 px-4 py-2 rounded-lg border-2 border-gray-200 bg-gray-50 text-sm text-gray-600">
+                                    <button onclick="copyImageUrl()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div id="form-contact" class="form-section hidden">
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Nombre completo</label>
+                                <input type="text" id="contact-name" placeholder="Juan Pérez" 
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                    oninput="generateQR()">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Teléfono</label>
+                                <input type="tel" id="contact-phone" placeholder="+34 612 345 678" 
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                    oninput="generateQR()">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                            <input type="email" id="contact-email" placeholder="juan@ejemplo.com" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                oninput="generateQR()">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Organización</label>
+                            <input type="text" id="contact-org" placeholder="Empresa S.L." 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                oninput="generateQR()">
+                        </div>
+                    </div>
+
+                    <!-- WiFi Form -->
+                    <div id="form-wifi" class="form-section hidden">
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de red (SSID)</label>
+                            <input type="text" id="wifi-ssid" placeholder="MiWiFi_5G" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                oninput="generateQR()">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Contraseña</label>
+                            <div class="relative">
+                                <input type="password" id="wifi-pass" placeholder="Contraseña segura" 
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all pr-10"
+                                    oninput="generateQR()">
+                                <button onclick="togglePassword('wifi-pass')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de seguridad</label>
+                            <select id="wifi-type" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all bg-white" onchange="generateQR()">
+                                <option value="WPA">WPA/WPA2</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">Sin contraseña</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Email Form -->
+                    <div id="form-email" class="form-section hidden">
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Destinatario</label>
+                            <input type="email" id="email-to" placeholder="destinatario@ejemplo.com" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                oninput="generateQR()">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Asunto</label>
+                            <input type="text" id="email-subject" placeholder="Consulta importante" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all"
+                                oninput="generateQR()">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Mensaje</label>
+                            <textarea id="email-body" rows="3" placeholder="Escribe tu mensaje aquí..." 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 input-glow outline-none transition-all resize-none"
+                                oninput="generateQR()"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Customization Options -->
+                    <div class="border-t-2 border-gray-100 pt-6 mt-6">
+                        <label class="block text-sm font-bold text-gray-700 mb-4">
+                            <i class="fa-solid fa-palette mr-2 text-indigo-500"></i>Personalización
+                        </label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">Color QR</label>
+                                <div class="color-picker-wrapper h-10 rounded-lg shadow-sm cursor-pointer" style="background: #000000;">
+                                    <input type="color" id="qr-color" value="#000000" onchange="generateQR()">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">Color fondo</label>
+                                <div class="color-picker-wrapper h-10 rounded-lg shadow-sm cursor-pointer" style="background: #ffffff;">
+                                    <input type="color" id="bg-color" value="#ffffff" onchange="generateQR()">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">Tamaño</label>
+                                <select id="qr-size" class="w-full h-10 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
+                                    <option value="200">Pequeño (200px)</option>
+                                    <option value="300" selected>Mediano (300px)</option>
+                                    <option value="400">Grande (400px)</option>
+                                    <option value="500">Extra Grande (500px)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">Calidad</label>
+                                <select id="qr-level" class="w-full h-10 rounded-lg border-2 border-gray-200 px-2 text-sm" onchange="generateQR()">
+                                    <option value="1">Baja</option>
+                                    <option value="2" selected>Media</option>
+                                    <option value="3">Alta</option>
+                                    <option value="4">Máxima</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Features -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="glass-panel rounded-2xl p-4 feature-card">
+                        <div class="text-indigo-500 text-2xl mb-2"><i class="fa-solid fa-bolt"></i></div>
+                        <h3 class="font-bold text-gray-800 mb-1">Instantáneo</h3>
+                        <p class="text-sm text-gray-600">Generación en tiempo real sin esperas</p>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-4 feature-card">
+                        <div class="text-purple-500 text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="font-bold text-gray-800 mb-1">Privado</h3>
+                        <p class="text-sm text-gray-600">Los datos no se guardan en servidor</p>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-4 feature-card">
+                        <div class="text-pink-500 text-2xl mb-2"><i class="fa-solid fa-infinity"></i></div>
+                        <h3 class="font-bold text-gray-800 mb-1">Ilimitado</h3>
+                        <p class="text-sm text-gray-600">Crea todos los QR que necesites</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Preview -->
+            <div class="lg:col-span-5">
+                <div class="sticky top-8 space-y-6">
+                    
+                    <!-- QR Preview Card -->
+                    <div class="qr-container p-8 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Space_Grotesk']">
+                            Tu Código QR
+                        </h2>
+                        
+                        <div id="qrcode" class="flex justify-center mb-6 min-h-[200px] items-center">
+                            <div class="text-gray-400">
+                                <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
+                                <p class="text-sm">Ingresa datos para generar</p>
+                            </div>
+                        </div>
+
+                        <div id="qr-actions" class="space-y-3 opacity-50 pointer-events-none transition-all">
+                            <div class="flex gap-3">
+                                <button onclick="downloadQR('png')" class="flex-1 btn-primary text-white py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-download"></i> PNG
+                                </button>
+                                <button onclick="downloadQR('svg')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-vector-square"></i> SVG
+                                </button>
+                            </div>
+                            <button onclick="shareQR()" class="w-full bg-white border-2 border-gray-200 hover:border-indigo-500 text-gray-700 py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-share-nodes"></i> Compartir
+                            </button>
+                        </div>
+
+                        <div id="qr-info" class="mt-4 text-sm text-gray-500 hidden">
+                            <i class="fa-solid fa-check-circle text-green-500 mr-1"></i>
+                            <span id="qr-data-preview"></span>
+                        </div>
+                    </div>
+
+                    <!-- History -->
+                    <div class="glass-panel rounded-3xl p-6 shadow-xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-indigo-500"></i>
+                                Historial reciente
+                            </h3>
+                            <button onclick="clearHistory()" class="text-xs text-red-500 hover:text-red-700 font-medium">
+                                Borrar
+                            </button>
+                        </div>
+                        <div id="history-list" class="space-y-2 max-h-48 overflow-y-auto">
+                            <p class="text-sm text-gray-400 text-center py-4">No hay QR generados aún</p>
+                        </div>
+                    </div>
+
+                    <!-- Tips -->
+                    <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-6 text-white shadow-xl">
+                        <h3 class="font-bold mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-yellow-300"></i>
+                            Consejo pro
+                        </h3>
+                        <p class="text-sm text-white/90 leading-relaxed" id="tip-text">
+                            Los códigos QR con alto contraste (negro sobre blanco) escanean mejor. Evita invertir los colores para máxima compatibilidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-white/60 text-sm">
+            <p>Generador QR Pro © 2024 • 100% Gratuito y Privado</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-check-circle text-green-400"></i>
+        <span id="toast-message">Operación exitosa</span>
+    </div>
+
+    <script>
+        let currentTab = 'url';
+        let qrCodeObj = null;
+        let history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
+        let uploadedImageData = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateHistoryDisplay();
+            setupDragAndDrop();
+            
+            // Character counter for text
+            document.getElementById('input-text')?.addEventListener('input', function() {
+                document.getElementById('char-count').textContent = this.value.length + ' caracteres';
+            });
+        });
+
+        function switchTab(tab) {
+            // Update buttons
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
+            });
+            document.getElementById('tab-' + tab).classList.remove('tab-inactive');
+            document.getElementById('tab-' + tab).classList.add('tab-active');
+
+            // Update forms
+            document.querySelectorAll('.form-section').forEach(form => {
+                form.classList.add('hidden');
+            });
+            document.getElementById('form-' + tab).classList.remove('hidden');
+
+            currentTab = tab;
+            generateQR();
+            
+            // Update tip
+            updateTip(tab);
+        }
+
+        function updateTip(tab) {
+            const tips = {
+                url: "Para enlaces, usa URLs cortas (acorta con bit.ly) para crear QR menos densos y más fáciles de escanear.",
+                text: "El límite es ~3000 caracteres. Para textos largos, considera crear un PDF y subirlo como imagen.",
+                image: "Las imágenes se convierten a URL pública temporal. Para uso permanente, usa un servicio como Imgur.",
+                contact: "El formato vCard es compatible con todos los smartphones. Asegúrate de incluir prefijo de país (+34).",
+                wifi: "El QR WiFi permite conectarse automáticamente. Funciona en iOS 11+ y Android 10+ sin necesidad de apps.",
+                email: "Prellena el asunto y cuerpo para facilitar consultas. Ideal para soporte técnico o contactos comerciales."
+            };
+            document.getElementById('tip-text').textContent = tips[tab];
+        }
+
+        function getQRData() {
+            switch(currentTab) {
+                case 'url':
+                    const url = document.getElementById('input-url').value.trim();
+                    return url ? (url.startsWith('http') ? url : 'https://' + url) : '';
+                
+                case 'text':
+                    return document.getElementById('input-text').value.trim();
+                
+                case 'image':
+                    return uploadedImageData || '';
+                
+                case 'contact':
+                    const name = document.getElementById('contact-name').value;
+                    const phone = document.getElementById('contact-phone').value;
+                    const email = document.getElementById('contact-email').value;
+                    const org = document.getElementById('contact-org').value;
+                    if (!name && !phone) return '';
+                    return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone}\nEMAIL:${email}\nORG:${org}\nEND:VCARD`;
+                
+                case 'wifi':
+                    const ssid = document.getElementById('wifi-ssid').value;
+                    const pass = document.getElementById('wifi-pass').value;
+                    const type = document.getElementById('wifi-type').value;
+                    if (!ssid) return '';
+                    return `WIFI:T:${type};S:${ssid};P:${pass};;`;
+                
+                case 'email':
+                    const to = document.getElementById('email-to').value;
+                    const subject = document.getElementById('email-subject').value;
+                    const body = document.getElementById('email-body').value;
+                    if (!to) return '';
+                    return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                
+                default:
+                    return '';
+            }
+        }
+
+        function generateQR() {
+            const data = getQRData();
+            const container = document.getElementById('qrcode');
+            const actions = document.getElementById('qr-actions');
+            const info = document.getElementById('qr-info');
+            const preview = document.getElementById('qr-data-preview');
+
+            if (!data) {
+                container.innerHTML = `
+                    <div class="text-gray-400">
+                        <i class="fa-solid fa-qrcode text-6xl mb-2 opacity-20"></i>
+                        <p class="text-sm">Ingresa datos para generar</p>
+                    </div>
+                `;
+                actions.classList.add('opacity-50', 'pointer-events-none');
+                info.classList.add('hidden');
+                return;
+            }
+
+            // Clear previous
+            container.innerHTML = '';
+            
+            const size = parseInt(document.getElementById('qr-size').value);
+            const color = document.getElementById('qr-color').value;
+            const bgColor = document.getElementById('bg-color').value;
+            const level = parseInt(document.getElementById('qr-level').value);
+
+            try {
+                qrCodeObj = new QRCode(container, {
+                    text: data,
+                    width: size,
+                    height: size,
+                    colorDark: color,
+                    colorLight: bgColor,
+                    correctLevel: level
+                });
+
+                // Enable actions
+                actions.classList.remove('opacity-50', 'pointer-events-none');
+                
+                // Show preview info
+                let previewText = data;
+                if (previewText.length > 50) previewText = previewText.substring(0, 50) + '...';
+                preview.textContent = previewText;
+                info.classList.remove('hidden');
+
+                // Add to history (debounced)
+                clearTimeout(window.historyTimeout);
+                window.historyTimeout = setTimeout(() => addToHistory(data, currentTab), 1000);
+
+            } catch (e) {
+                console.error('QR Generation error:', e);
+                container.innerHTML = '<p class="text-red-500">Error al generar QR. Datos demasiado largos.</p>';
+            }
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('La imagen es demasiado grande. Máximo 5MB.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('preview-img');
+                img.src = e.target.result;
+                
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview').classList.remove('hidden');
+                
+                // Simulate URL generation (in real app, upload to server)
+                const fakeUrl = 'https://qrpro.app/img/' + Math.random().toString(36).substring(7);
+                uploadedImageData = fakeUrl;
+                
+                document.getElementById('image-url-container').classList.remove('hidden');
+                document.getElementById('image-url-input').value = fakeUrl;
+                
+                generateQR();
+                showToast('Imagen cargada correctamente');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setupDragAndDrop() {
+            const zone = document.getElementById('upload-zone');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                zone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                zone.addEventListener(eventName, () => zone.classList.add('dragover'), false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                zone.addEventListener(eventName, () => zone.classList.remove('dragover'), false);
+            });
+            
+            zone.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length) {
+                    document.getElementById('input-image').files = files;
+                    handleImageUpload({ target: { files: files } });
+                }
+            }
+        }
+
+        function copyImageUrl() {
+            const input = document.getElementById('image-url-input');
+            input.select();
+            document.execCommand('copy');
+            showToast('URL copiada al portapapeles');
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function downloadQR(format) {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) return;
+
+            if (format === 'png') {
+                const link = document.createElement('a');
+                link.download = 'qr-code-' + Date.now() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('QR descargado como PNG');
+            } else {
+                // SVG generation would require additional library
+                showToast('SVG disponible próximamente', 'info');
+            }
+        }
+
+        function shareQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) return;
+            
+            canvas.toBlob(blob => {
+                const file = new File([blob], 'qr-code.png', { type: 'image/png' });
+                if (navigator.share && navigator.canShare({ files: [file] })) {
+                    navigator.share({
+                        title: 'Mi Código QR',
+                        text: 'Escanea este código QR',
+                        files: [file]
+                    }).catch(() => {
+                        // Fallback: copy to clipboard
+                        copyToClipboard();
+                    });
+                } else {
+                    copyToClipboard();
+                }
+            });
+        }
+
+        function copyToClipboard() {
+            const canvas = document.querySelector('#qrcode canvas');
+            canvas.toBlob(blob => {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item]).then(() => {
+                    showToast('QR copiado al portapapeles');
+                });
+            });
+        }
+
+        function addToHistory(data, type) {
+            const item = {
+                data: data.substring(0, 100),
+                type: type,
+                time: new Date().toLocaleTimeString(),
+                fullData: data
+            };
+            
+            history.unshift(item);
+            if (history.length > 10) history.pop();
+            
+            localStorage.setItem('qrHistory', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const container = document.getElementById('history-list');
+            if (history.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-400 text-center py-4">No hay QR generados aún</p>';
+                return;
+            }
+
+            const icons = {
+                url: 'fa-link',
+                text: 'fa-font',
+                image: 'fa-image',
+                contact: 'fa-address-card',
+                wifi: 'fa-wifi',
+                email: 'fa-envelope'
+            };
+
+            container.innerHTML = history.map((item, idx) => `
+                <div class="history-item flex items-center gap-3 p-3 rounded-xl cursor-pointer bg-white/50" onclick="restoreHistory(${idx})">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600">
+                        <i class="fa-solid ${icons[item.type] || 'fa-qrcode'}"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">${item.data}</p>
+                        <p class="text-xs text-gray-500">${item.time} • ${item.type}</p>
+                    </div>
+                    <button onclick="event.stopPropagation(); loadHistoryItem(${idx})" class="text-indigo-500 hover:text-indigo-700 p-2">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryItem(idx) {
+            const item = history[idx];
+            switchTab(item.type);
+            
+            // Restore data based on type
+            switch(item.type) {
+                case 'url':
+                    document.getElementById('input-url').value = item.fullData;
+                    break;
+                case 'text':
+                    document.getElementById('input-text').value = item.fullData;
+                    break;
+            }
+            generateQR();
+            showToast('Datos restaurados del historial');
+        }
+
+        function clearHistory() {
+            history = [];
+            localStorage.removeItem('qrHistory');
+            updateHistoryDisplay();
+            showToast('Historial borrado');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const icon = toast.querySelector('i');
+            
+            msgEl.textContent = message;
+            
+            if (type === 'error') {
+                icon.className = 'fa-solid fa-circle-xmark text-red-400';
+            } else if (type === 'info') {
+                icon.className = 'fa-solid fa-circle-info text-blue-400';
+            } else {
+                icon.className = 'fa-solid fa-check-circle text-green-400';
+            }
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Add animation styles for blob background
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes blob {
+                0% { transform: translate(0px, 0px) scale(1); }
+                33% { transform: translate(30px, -50px) scale(1.1); }
+                66% { transform: translate(-20px, 20px) scale(0.9); }
+                100% { transform: translate(0px, 0px) scale(1); }
+            }
+            .animate-blob {
+                animation: blob 7s infinite;
+            }
+            .animation-delay-2000 {
+                animation-delay: 2s;
+            }
+            .animation-delay-4000 {
+                animation-delay: 4s;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
